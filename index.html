@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Legaicy — The Identity Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  :root {
+    --gold: #C8A95A;
+    --gold-light: #E5C97A;
+    --gold-dim: #7A6030;
+    --gold-glow: rgba(200,169,90,0.15);
+    --black: #060606;
+    --surface: #0D0D0D;
+    --surface2: #141414;
+    --surface3: #1A1A1A;
+    --border: #1E1E1E;
+    --border2: #282828;
+    --text: #EAE6DE;
+    --muted: #585450;
+    --muted2: #3A3634;
+    --red: #FF4422;
+    --blue: #3D8FFF;
+    --green: #3DFFA0;
+    --purple: #A855F7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 60px;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(6,6,6,0.9);
+    backdrop-filter: blur(32px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    border: 1px solid var(--gold-dim);
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(200,169,90,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    bottom: -100px;
+    left: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(61,143,255,0.04) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-glow3 {
+    position: absolute;
+    bottom: -100px;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,68,34,0.04) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-wm {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(100px, 18vw, 260px);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(200,169,90,0.04);
+    pointer-events: none;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: rise 1s ease both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 9vw, 108px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    animation: rise 1s 0.1s ease both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-title em { font-style: italic; color: var(--gold); }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 21px);
+    font-weight: 300;
+    color: rgba(234,230,222,0.75);
+    max-width: 620px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+    animation: rise 1s 0.2s ease both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-sub strong { color: var(--gold-light); font-weight: 600; }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 56px;
+    animation: rise 1s 0.3s ease both;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .hstat {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .hstat:hover { transform: translateY(-4px); border-color: var(--gold-dim); }
+
+  .hstat-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .hstat.s1 .hstat-bar { background: var(--gold); }
+  .hstat.s2 .hstat-bar { background: var(--blue); }
+  .hstat.s3 .hstat-bar { background: var(--red); }
+  .hstat.s4 .hstat-bar { background: var(--green); }
+
+  .hstat-icon { margin: 0 auto 10px; width: 28px; height: 28px; }
+  .hstat.s1 .hstat-icon { color: var(--gold); }
+  .hstat.s2 .hstat-icon { color: var(--blue); }
+  .hstat.s3 .hstat-icon { color: var(--red); }
+  .hstat.s4 .hstat-icon { color: var(--green); }
+
+  .hstat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+
+  .hstat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hstat-sub { font-size: 11px; color: var(--muted); }
+
+  /* SCROLL */
+  .scroll-cue {
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    animation: rise 1s 0.9s ease both;
+    z-index: 2;
+  }
+
+  .scroll-line {
+    width: 1px; height: 44px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  /* WRAPPER */
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 100px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* SECTION HEADER */
+  .sh {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .sh i { width: 13px; height: 13px; }
+  .sh::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 56px; }
+
+  .st {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 36px;
+  }
+
+  .st em { font-style: italic; color: var(--gold); }
+
+  p {
+    color: rgba(234,230,222,0.72);
+    font-size: 15px;
+    margin-bottom: 16px;
+    max-width: 680px;
+    line-height: 1.8;
+  }
+
+  .rule { width: 44px; height: 1px; background: var(--gold-dim); margin: 0 0 36px; }
+
+  /* MANIFESTO */
+  .manifesto {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--gold);
+    padding: 48px 52px;
+    margin: 44px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .manifesto::before {
+    content: '"';
+    position: absolute;
+    top: -16px; left: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 160px;
+    color: rgba(200,169,90,0.05);
+    line-height: 1;
+  }
+
+  .ml {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ml:last-child { margin-bottom: 0; }
+  .ml strong { color: var(--gold-light); font-weight: 700; }
+
+  /* HYPE BOX */
+  .hype {
+    background: linear-gradient(135deg, rgba(200,169,90,0.1), rgba(200,169,90,0.03));
+    border: 1px solid rgba(200,169,90,0.25);
+    padding: 32px 40px;
+    margin: 32px 0;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .hype i { width: 18px; height: 18px; color: var(--gold); flex-shrink: 0; margin-top: 3px; }
+
+  .hype p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--gold-light);
+    max-width: none;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* TWO COL */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 44px 0; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px;
+  }
+
+  .panel.gold-tint {
+    background: linear-gradient(135deg, rgba(200,169,90,0.07), rgba(200,169,90,0.02));
+    border-color: rgba(200,169,90,0.18);
+  }
+
+  .panel-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-label i { width: 11px; height: 11px; }
+  .panel.gold-tint .panel-label { color: var(--gold-dim); }
+
+  .panel h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .panel.gold-tint h3 { color: var(--gold-light); }
+  .panel p { font-size: 13px; max-width: none; margin-bottom: 10px; }
+
+  /* THE BIG MONEY SECTION */
+  .money-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin: 44px 0;
+  }
+
+  .money-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .money-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .money-card.eth::before { background: var(--blue); }
+  .money-card.lgcy::before { background: var(--gold); }
+  .money-card.both::before { background: linear-gradient(90deg, var(--blue), var(--gold)); }
+
+  .money-card:hover { transform: translateY(-4px); border-color: var(--border2); }
+
+  .mc-icon { width: 36px; height: 36px; margin-bottom: 14px; }
+  .money-card.eth .mc-icon { color: var(--blue); }
+  .money-card.lgcy .mc-icon { color: var(--gold); }
+  .money-card.both .mc-icon { color: var(--gold); }
+
+  .mc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .mc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .money-card.eth .mc-num { color: var(--blue); }
+  .money-card.lgcy .mc-num { color: var(--gold); }
+  .money-card.both .mc-num { color: var(--gold-light); }
+
+  .mc-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 48px;
+    margin: 44px 0;
+  }
+
+  .flow-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 2px;
+  }
+
+  .flow-source {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .flow-source-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .flow-source-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .flow-source-name i { width: 14px; height: 14px; }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: var(--muted2);
+    font-size: 18px;
+  }
+
+  .flow-splits {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+  }
+
+  .flow-split {
+    flex: 1;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .flow-split.stakers { background: rgba(61,143,255,0.06); border-color: rgba(61,143,255,0.15); }
+  .flow-split.burn { background: rgba(255,68,34,0.06); border-color: rgba(255,68,34,0.15); }
+  .flow-split.lp { background: rgba(200,169,90,0.06); border-color: rgba(200,169,90,0.15); }
+  .flow-split.dev { background: rgba(90,90,90,0.06); }
+
+  .fs-pct {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .flow-split.stakers .fs-pct { color: var(--blue); }
+  .flow-split.burn .fs-pct { color: var(--red); }
+  .flow-split.lp .fs-pct { color: var(--gold); }
+  .flow-split.dev .fs-pct { color: var(--muted); }
+
+  .fs-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .fs-desc { font-size: 10px; color: var(--muted); line-height: 1.3; }
+
+  /* STAKER EARNINGS */
+  .earnings-box {
+    background: linear-gradient(135deg, rgba(61,143,255,0.08), rgba(61,143,255,0.02));
+    border: 1px solid rgba(61,143,255,0.2);
+    padding: 36px 40px;
+    margin: 44px 0;
+  }
+
+  .earnings-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .earnings-title i { width: 13px; height: 13px; }
+
+  .earnings-streams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .es {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .es-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .es-source i { width: 11px; height: 11px; }
+  .es-earn { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .es-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  /* POSITION FORMULA */
+  .formula-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 44px;
+    margin: 44px 0;
+    text-align: center;
+  }
+
+  .formula-eq {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: var(--text);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .formula-eq em { color: var(--gold); font-style: italic; }
+
+  .fvars {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .fvar {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    min-width: 180px;
+    text-align: center;
+  }
+
+  .fvar-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .fvar-name i { width: 12px; height: 12px; }
+  .fv1 .fvar-name { color: var(--gold); }
+  .fv2 .fvar-name { color: var(--blue); }
+  .fv3 .fvar-name { color: var(--red); }
+
+  .fvar-rows { display: flex; flex-direction: column; gap: 4px; }
+
+  .fvar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    gap: 12px;
+  }
+
+  .fvar-row-label { color: var(--muted); text-align: left; }
+  .fvar-row-val { color: var(--text); font-weight: 600; white-space: nowrap; }
+
+  /* QUERY TIERS */
+  .qtiers { display: flex; flex-direction: column; gap: 2px; margin: 44px 0; }
+
+  .qtier {
+    display: grid;
+    grid-template-columns: 56px 1fr 160px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 18px 24px;
+    gap: 20px;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .qtier:hover { border-color: var(--border2); transform: translateX(6px); }
+
+  .qt-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold-dim);
+    text-align: center;
+    line-height: 1;
+  }
+
+  .qt-body h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qt-body h4 i { width: 13px; height: 13px; color: var(--gold-dim); }
+  .qt-body p { font-size: 11px; color: var(--muted); margin: 0; max-width: none; }
+
+  .qt-price { text-align: right; }
+
+  .qt-eth {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .qt-usd {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .qt-split {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ROI SCENARIOS */
+  .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 44px 0; }
+
+  .scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .scenario:hover { border-color: var(--border2); transform: translateY(-4px); }
+
+  .scenario-head {
+    background: var(--surface2);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .scenario-head-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scenario-head-top i { width: 16px; height: 16px; color: var(--gold); }
+
+  .scenario-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .scenario-users {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scenario-pool {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .scenario-body { padding: 20px 24px; }
+
+  .srow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,30,30,0.8);
+    gap: 12px;
+  }
+
+  .srow:last-child { border-bottom: none; }
+
+  .srow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .srow-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-light);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .srow-val.big { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--green); }
+  .srow-val.free { color: var(--green); }
+
+  /* Q PRICING */
+  .qprice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 44px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .qprice-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+    background: var(--surface2);
+  }
+
+  .qprice-table td {
+    padding: 12px 20px;
+    color: rgba(234,230,222,0.65);
+    border-bottom: 1px solid rgba(30,30,30,0.5);
+    vertical-align: middle;
+  }
+
+  .qprice-table tr:last-child td {
+    font-weight: 600;
+    color: var(--gold);
+    border-bottom: none;
+    background: rgba(200,169,90,0.03);
+  }
+
+  .qprice-table tr:hover td { background: rgba(200,169,90,0.02); }
+
+  .qn {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .q-one-eth {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 2px 6px;
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  .q-dim { color: var(--red) !important; }
+
+  /* STAGES */
+  .stages { display: flex; flex-direction: column; gap: 2px; margin: 44px 0; }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .stage:hover { border-color: var(--border2); }
+
+  .stage-left {
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .stage-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .stage-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .stage-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .stage-right { padding: 24px 28px; display: flex; align-items: center; }
+  .stage-right p { font-size: 13px; margin: 0; color: rgba(234,230,222,0.6); line-height: 1.65; max-width: none; }
+
+  /* PRINCIPLES */
+  .principles { display: flex; flex-direction: column; gap: 2px; margin: 44px 0; }
+
+  .prin {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.2s;
+    align-items: stretch;
+  }
+
+  .prin:hover { border-color: var(--border2); }
+
+  .prin-icon {
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-dim);
+  }
+
+  .prin-icon i { width: 15px; height: 15px; }
+  .prin-body { padding: 18px 24px; }
+
+  .prin-body h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .prin-body p { font-size: 12px; color: var(--muted); margin: 0; max-width: none; line-height: 1.5; }
+
+  /* ROADMAP */
+  .phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin: 44px 0; }
+
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase.now {
+    border-color: rgba(200,169,90,0.3);
+    background: linear-gradient(160deg, rgba(200,169,90,0.06), transparent);
+  }
+
+  .phase.now::after {
+    content: 'NOW';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 2px 6px;
+  }
+
+  .phase-icon { color: var(--gold-dim); width: 18px; height: 18px; margin-bottom: 10px; }
+  .phase-n { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.25em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+
+  .phase h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .phase.now h3 { color: var(--gold-light); }
+
+  .phase ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+
+  .phase ul li {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    line-height: 1.4;
+  }
+
+  .phase ul li i { width: 11px; height: 11px; flex-shrink: 0; margin-top: 2px; color: var(--gold-dim); }
+
+  /* CTA */
+  .cta {
+    padding: 140px 60px;
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,169,90,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-title em { color: var(--gold); font-style: italic; }
+
+  .cta-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 44px;
+    position: relative;
+    z-index: 2;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 44px;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+  }
+
+  .btn-p {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 15px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-p i { width: 13px; height: 13px; }
+  .btn-p:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-s {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 15px 40px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-s i { width: 13px; height: 13px; }
+  .btn-s:hover { border-color: var(--gold); background: rgba(200,169,90,0.05); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .foot-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold-dim); }
+  .foot-txt { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+
+  /* PRIVACY TABLE */
+  .ptable { width: 100%; border-collapse: collapse; margin: 44px 0; }
+
+  .ptable th {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    font-weight: 400;
+  }
+
+  .ptable td {
+    padding: 12px 18px;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(30,30,30,0.5);
+    background: var(--surface);
+  }
+
+  .ptable td:first-child { color: var(--text); font-weight: 500; }
+  .pok { color: var(--green); display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .pno { color: var(--red); display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .pok i, .pno i { width: 12px; height: 12px; }
+  .pnote { color: var(--muted); font-size: 11px; }
+
+  /* ANIMATIONS */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .wrap { padding: 60px 20px; }
+    .two, .money-grid, .scenarios, .phases { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; }
+    .fvars { flex-direction: column; align-items: center; }
+    .qtier { grid-template-columns: 40px 1fr; }
+    .qt-price { display: none; }
+    .stage, .prin { grid-template-columns: 1fr; }
+    .stage-left, .prin-icon { border-right: none; border-bottom: 1px solid var(--border); }
+    footer { flex-direction: column; gap: 10px; text-align: center; }
+    .cta { padding: 80px 20px; }
+    .manifesto { padding: 28px 24px; }
+    .flow { padding: 28px 20px; }
+    .flow-row { flex-direction: column; }
+    .earnings-streams { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">Legaicy</div>
+    <div class="nav-pill">Whitepaper v4.0</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#yours">Ownership</a></li>
+    <li><a href="#token">Token</a></li>
+    <li><a href="#staking">Staking</a></li>
+    <li><a href="#queries">Queries</a></li>
+    <li><a href="#supply">Supply</a></li>
+    <li><a href="#roi">ROI</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-glow3"></div>
+  <div class="hero-wm">LEGAICY</div>
+
+  <div class="hero-eyebrow">
+    <i data-lucide="file-text" style="width:11px;height:11px"></i>
+    legaicy.win — Protocol Whitepaper — 2026
+  </div>
+
+  <h1 class="hero-title">
+    Your Data.<br>
+    Your <em>Asset.</em><br>
+    Your Legacy.
+  </h1>
+
+  <p class="hero-sub">
+    Want to preserve your legacy? Want to get paid for the information you already give out freely?<br>
+    <strong>Make corporations pay for your data. You get the revenue.</strong>
+  </p>
+
+  <div class="hero-stats">
+    <div class="hstat s1">
+      <div class="hstat-icon"><i data-lucide="pencil-line"></i></div>
+      <div class="hstat-label">Answer Economy</div>
+      <div class="hstat-value">LGCY</div>
+      <div class="hstat-sub">Earned per answer</div>
+      <div class="hstat-bar"></div>
+    </div>
+    <div class="hstat s2">
+      <div class="hstat-icon"><i data-lucide="lock"></i></div>
+      <div class="hstat-label">Stake Economy</div>
+      <div class="hstat-value">ETH</div>
+      <div class="hstat-sub">Earned from staking</div>
+      <div class="hstat-bar"></div>
+    </div>
+    <div class="hstat s3">
+      <div class="hstat-icon"><i data-lucide="flame"></i></div>
+      <div class="hstat-label">Burn Economy</div>
+      <div class="hstat-value">∞</div>
+      <div class="hstat-sub">LGCY burned on every query</div>
+      <div class="hstat-bar"></div>
+    </div>
+    <div class="hstat s4">
+      <div class="hstat-icon"><i data-lucide="shield"></i></div>
+      <div class="hstat-label">Privacy</div>
+      <div class="hstat-value">100%</div>
+      <div class="hstat-sub">Answers always private</div>
+      <div class="hstat-bar"></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <i data-lucide="chevrons-down" style="width:14px;height:14px"></i>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- VISION -->
+<div class="wrap" id="vision">
+  <div class="sh"><i data-lucide="eye"></i> 01 — Vision</div>
+  <h2 class="st">You've been the<br><em>product long enough.</em></h2>
+  <div class="rule"></div>
+
+  <div class="manifesto">
+    <div class="ml">Want to preserve your legacy?</div>
+    <div class="ml">Want to get paid for the information <strong>you already give out freely?</strong></div>
+    <div class="ml">Make corporations pay for your data.</div>
+    <div class="ml"><strong>You get the revenue.</strong></div>
+  </div>
+
+  <p>Every day you generate data. Your preferences, beliefs, decisions, habits, opinions. Google sells it. Facebook sells it. Amazon sells it. You see nothing. You didn't even consent.</p>
+  <p>Legaicy is the protocol that ends that arrangement permanently. You answer questions. You build a personal AI. Your collective answers become a queryable corpus. Corporations pay ETH to access it. That ETH flows directly to you and your fellow stakers. The buying pressure from corporate participation benefits every token holder. Every query makes every remaining LGCY scarcer.</p>
+
+  <div class="two">
+    <div class="panel">
+      <div class="panel-label"><i data-lucide="x-circle"></i> The old world</div>
+      <h3>You create the value. They extract it.</h3>
+      <p>Every search, click, and preference harvested without consent. Platforms capture everything. You receive nothing. You've been rugged by the internet since day one.</p>
+    </div>
+    <div class="panel gold-tint">
+      <div class="panel-label"><i data-lucide="check-circle"></i> The Legaicy model</div>
+      <h3>You create the value. <em>You own it.</em></h3>
+      <p>Answers locked on your terms. ETH flows to stakers from every question and every corporate query. LGCY supply shrinks with every query. Your data is your asset. Permanently.</p>
+    </div>
+  </div>
+</div>
+
+<!-- YOU ARE THIS COMPANY -->
+<div class="wrap" id="yours">
+  <div class="sh"><i data-lucide="building-2"></i> 02 — You Are This Company</div>
+  <h2 class="st">Not a user.<br><em>An owner.</em></h2>
+  <div class="rule"></div>
+
+  <p>Every answer you lock is an asset on your balance sheet. Every day you contribute, your company gets more valuable. Every corporate query that hits your categories pays you a dividend. Trolls who give garbage answers own a garbage company worth nothing to buyers. People who answer authentically own a premium data asset that commands premium corporate interest.</p>
+
+  <div class="hype">
+    <i data-lucide="quote"></i>
+    <p>"The quality of what you build determines what it pays you. You are not contributing to someone else's dataset. You are building your own data company — one answer at a time."</p>
+  </div>
+
+  <div class="stages">
+    <div class="stage">
+      <div class="stage-left">
+        <div class="stage-num">Stage 01</div>
+        <div class="stage-name">Startup</div>
+        <div class="stage-range">0–30 answers</div>
+      </div>
+      <div class="stage-right"><p>Your data company is just getting started. Tier 1-2 queries only. Corpus too thin for premium buyers. Keep building — every answer compounds. The moat starts here.</p></div>
+    </div>
+    <div class="stage">
+      <div class="stage-left">
+        <div class="stage-num">Stage 02</div>
+        <div class="stage-name">Growing</div>
+        <div class="stage-range">31–100 answers</div>
+      </div>
+      <div class="stage-right"><p>Companies are querying your categories. You earned ETH from corporate query distributions this month. Tier 3 expert queries unlocking. Your corpus is commercially valuable.</p></div>
+    </div>
+    <div class="stage">
+      <div class="stage-left">
+        <div class="stage-num">Stage 03</div>
+        <div class="stage-name">Established</div>
+        <div class="stage-range">100+ answers + wearable</div>
+      </div>
+      <div class="stage-right"><p>Premium Tier 3-4 queries reach your profile. Biometric data unlocks health and pharma category buyers. Monthly ETH distributions trending up. Two income streams running simultaneously.</p></div>
+    </div>
+    <div class="stage">
+      <div class="stage-left">
+        <div class="stage-num">Stage 04</div>
+        <div class="stage-name">Authority</div>
+        <div class="stage-range">100+ in a category</div>
+      </div>
+      <div class="stage-right"><p>One of the most queried profiles in your domain. Tier 4-5 enterprise queries available. Top earner tier. Early entry created a position nobody can buy their way into. The compounding is undeniable.</p></div>
+    </div>
+  </div>
+
+  <p>As time goes on the queries get more expensive and more specific. Health data, wearables, opt-in interest signals — each unlocks a new tier of corporate interest. The corpus gets richer. The fees get higher. The people who built early earn the most.</p>
+</div>
+
+<!-- TOKEN ECONOMICS -->
+<div class="wrap" id="token">
+  <div class="sh"><i data-lucide="coins"></i> 03 — Token Economics</div>
+  <h2 class="st">LGCY.<br><em>Unlimited. Disinflationary. Yours.</em></h2>
+  <div class="rule"></div>
+
+  <p>LGCY has no hard cap — similar to XEN, the emission rate is the scarcity mechanism not an arbitrary number. As question prices rise over time emission slows. As corporate query volume grows burns accelerate. Net supply trends toward deflationary without ever hitting an artificial ceiling.</p>
+
+  <div class="money-grid">
+    <div class="money-card eth">
+      <div class="mc-icon"><i data-lucide="pencil-line"></i></div>
+      <div class="mc-label">How you earn it</div>
+      <div class="mc-num">Answer</div>
+      <div class="mc-desc">No presale. No VC. No airdrop. The only way to get LGCY at launch is to participate — same as everyone including the founding team.</div>
+    </div>
+    <div class="money-card lgcy">
+      <div class="mc-icon"><i data-lucide="lock"></i></div>
+      <div class="mc-label">How it pays you</div>
+      <div class="mc-num">Stake</div>
+      <div class="mc-desc">Concentrated knowledge staking earns ETH from two sources simultaneously. The more you answered, the more you earn. Capital amplifies knowledge — it cannot replace it.</div>
+    </div>
+    <div class="money-card both">
+      <div class="mc-icon"><i data-lucide="flame"></i></div>
+      <div class="mc-label">Why it appreciates</div>
+      <div class="mc-num">Burns</div>
+      <div class="mc-desc">Every corporate query burns LGCY permanently. Buying pressure from ETH buy and burn. Supply shrinks as demand grows. Disinflationary by design.</div>
+    </div>
+  </div>
+
+  <!-- LGCY EMISSION -->
+  <div class="sh" style="margin-top:56px;"><i data-lucide="zap"></i> LGCY Emission Per Answer</div>
+  <p>Quality earns more. High-value data earns more. Patience earns more than impatience.</p>
+
+  <div style="background:var(--surface);border:1px solid var(--border);padding:32px;margin:32px 0;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--text);margin-bottom:24px;line-height:1.6;">
+      LGCY = Base × <span style="color:var(--gold)">Answer Score Multiplier</span> × <span style="color:var(--blue)">Question Tier Multiplier</span> × <span style="color:var(--red)">Question # Modifier</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i data-lucide="star" style="width:11px;height:11px"></i> Answer Score</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Score 0–20</span><span style="color:var(--text);font-weight:600;">1.0×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Score 21–40</span><span style="color:var(--text);font-weight:600;">1.25×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Score 41–60</span><span style="color:var(--text);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Score 61–80</span><span style="color:var(--text);font-weight:600;">1.75×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Score 81–100</span><span style="color:var(--gold-light);font-weight:700;">2.0×</span></div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--blue);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i data-lucide="layers" style="width:11px;height:11px"></i> Question Tier</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier C General</span><span style="color:var(--text);font-weight:600;">1.0×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier B Psychographic</span><span style="color:var(--text);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier B Crypto/Web3</span><span style="color:var(--text);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier A Financial</span><span style="color:var(--text);font-weight:600;">2.0×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier A Health</span><span style="color:var(--text);font-weight:600;">2.0×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Tier S Purchase Intent</span><span style="color:var(--gold-light);font-weight:700;">2.5×</span></div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--red);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i data-lucide="bar-chart-2" style="width:11px;height:11px"></i> Question Number</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q1–Q5</span><span style="color:var(--text);font-weight:600;">Full reward</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q6</span><span style="color:var(--text);font-weight:600;">0.8×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q7</span><span style="color:var(--text);font-weight:600;">0.6×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q8</span><span style="color:var(--text);font-weight:600;">0.4×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q9</span><span style="color:var(--text);font-weight:600;">0.2×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q10</span><span style="color:var(--red);font-weight:600;">0.1× — flex only</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hype">
+    <i data-lucide="zap"></i>
+    <p>"A score-80 user answering a Tier S purchase intent question earns 5× more LGCY than a score-15 user answering a generic preference question. Quality is the only shortcut."</p>
+  </div>
+
+  <!-- QUESTION PRICING -->
+  <div class="sh" style="margin-top:56px;"><i data-lucide="trending-up"></i> Question Pricing Curve</div>
+  <p>Question 10 costs exactly 1 ETH standalone. Clean doubling from Q7. Daily cap: 10 questions per wallet. No free questions — even $0.25 at bootstrap filters bot farms.</p>
+
+  <table class="qprice-table">
+    <thead>
+      <tr>
+        <th>Q#</th>
+        <th>ETH (Maturity)</th>
+        <th>ETH (Bootstrap)</th>
+        <th>USD (~$2,500 ETH)</th>
+        <th>LGCY</th>
+        <th>Who</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="qn">1</span></td><td>0.001</td><td>0.0001</td><td>$2.50 / $0.25</td><td>Full</td><td>Everyone — the daily ritual</td></tr>
+      <tr><td><span class="qn">2</span></td><td>0.002</td><td>0.0002</td><td>$5.00</td><td>Full</td><td>Engaged users</td></tr>
+      <tr><td><span class="qn">3</span></td><td>0.005</td><td>0.0005</td><td>$12.50</td><td>Full</td><td>Active builders</td></tr>
+      <tr><td><span class="qn">4</span></td><td>0.011</td><td>0.0011</td><td>$27.50</td><td>Full</td><td>Power users</td></tr>
+      <tr><td><span class="qn">5</span></td><td>0.025</td><td>0.0025</td><td>$62.50</td><td>Full</td><td>Serious builders</td></tr>
+      <tr><td><span class="qn">6</span></td><td>0.062</td><td>0.0062</td><td>$155</td><td class="q-dim">0.8×</td><td>Whale territory</td></tr>
+      <tr><td><span class="qn">7</span></td><td>0.125</td><td>0.0125</td><td>$312.50</td><td class="q-dim">0.6×</td><td>Double starts</td></tr>
+      <tr><td><span class="qn">8</span></td><td>0.250</td><td>0.025</td><td>$625</td><td class="q-dim">0.4×</td><td>Ultra committed</td></tr>
+      <tr><td><span class="qn">9</span></td><td>0.500</td><td>0.05</td><td>$1,250</td><td class="q-dim">0.2×</td><td>Legendary</td></tr>
+      <tr><td><span class="qn">10</span></td><td>1.000</td><td>0.1</td><td>$2,500<span class="q-one-eth">THE 1 ETH ENTRY</span></td><td class="q-dim">0.1×</td><td>Protocol believers</td></tr>
+      <tr><td><strong>TOTAL</strong></td><td><strong>~1.981 ETH</strong></td><td><strong>~0.198 ETH</strong></td><td><strong>~$4,952</strong></td><td></td><td>Full day maximum</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STAKING -->
+<div class="wrap" id="staking">
+  <div class="sh"><i data-lucide="lock"></i> 04 — Staking & ETH Distribution</div>
+  <h2 class="st">Two sources.<br><em>One ETH yield.</em></h2>
+  <div class="rule"></div>
+
+  <p>Stakers earn ETH from two completely separate protocol flows — user question fees and corporate query fees. Both pay stakers in ETH proportional to their Proof of Knowledge position score. Two streams. Both passive. Both in ETH. Both compounding simultaneously.</p>
+  <p><strong style="color:var(--gold-light)">Flow 1 (user fees): 68% stakers / 26% buy & lock / 6% dev.</strong> The 26% buys LGCY off market and locks it in a corporate trial vault — not burned, but removed from circulation while building corporate adoption.</p>
+  <p><strong style="color:var(--gold-light)">Flow 2 (corporate fees): 50% stakers / 40% buy & burn / 10% dev.</strong> The 40% buys LGCY off market and burns it permanently. Every corporate query makes every remaining LGCY scarcer forever.</p>
+
+  <!-- ETH FLOW DIAGRAM -->
+  <div class="flow">
+    <div class="flow-title">Complete ETH Distribution — Both Fee Sources</div>
+
+    <!-- FLOW 1 LABEL -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+      <i data-lucide="pencil-line" style="width:11px;height:11px"></i>
+      Flow 1 — User Question Fees (ETH in from answering)
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-source">
+        <div class="flow-source-label">Users pay ETH</div>
+        <div class="flow-source-name"><i data-lucide="pencil-line"></i> Question Fees</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px;color:var(--muted2)"></i></div>
+      <div class="flow-splits">
+        <div class="flow-split stakers">
+          <div class="fs-pct">68%</div>
+          <div class="fs-label">Stakers</div>
+          <div class="fs-desc">ETH yield — proportional to position score</div>
+        </div>
+        <div class="flow-split lp">
+          <div class="fs-pct">26%</div>
+          <div class="fs-label">Buy & Lock</div>
+          <div class="fs-desc">Buys LGCY off market — locked in corp trial vault</div>
+        </div>
+        <div class="flow-split dev">
+          <div class="fs-pct">6%</div>
+          <div class="fs-label">Dev</div>
+          <div class="fs-desc">Hardcoded — only team compensation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOW 2 LABEL -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px;">
+      <i data-lucide="building-2" style="width:11px;height:11px"></i>
+      Flow 2 — Corporate Query Fees (ETH in from querying)
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-source">
+        <div class="flow-source-label">Corps pay ETH</div>
+        <div class="flow-source-name"><i data-lucide="building-2"></i> Query Fees</div>
+      </div>
+      <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px;color:var(--muted2)"></i></div>
+      <div class="flow-splits">
+        <div class="flow-split stakers">
+          <div class="fs-pct">50%</div>
+          <div class="fs-label">Stakers</div>
+          <div class="fs-desc">ETH yield — direct from corporate spend</div>
+        </div>
+        <div class="flow-split burn">
+          <div class="fs-pct">40%</div>
+          <div class="fs-label">Buy & Burn</div>
+          <div class="fs-desc">Buys LGCY off market — burned forever</div>
+        </div>
+        <div class="flow-split dev">
+          <div class="fs-pct">10%</div>
+          <div class="fs-label">Dev</div>
+          <div class="fs-desc">Hardcoded — sustains development</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUY & LOCK EXPLANATION -->
+    <div style="margin-top:16px;background:rgba(200,169,90,0.05);border:1px solid rgba(200,169,90,0.15);padding:20px 24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+        <i data-lucide="archive" style="width:11px;height:11px"></i>
+        What is Buy & Lock?
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">
+        The 26% Buy & Lock uses ETH to purchase LGCY off the open market — creating real buy pressure — then locks it in a corporate trial vault. Verified corporations receive trial LGCY drips to test queries before committing to paid access. Trial queries still burn LGCY. Every drip creates deflationary pressure. The vault is managed by the founding team initially, transitioning to governance in Phase 3. Monthly drip cap hardcoded — cannot be drained quickly.
+      </div>
+    </div>
+  </div>
+
+  <div class="earnings-box">
+    <div class="earnings-title"><i data-lucide="trending-up"></i> Your complete staking income picture</div>
+    <div class="earnings-streams">
+      <div class="es">
+        <div class="es-source"><i data-lucide="pencil-line"></i> Flow 1 — From user question fees</div>
+        <div class="es-earn">68% of all user ETH fees → your stake</div>
+        <div class="es-note">Every question answered by every user on every chain. Daily. Passive. The 26% buy & lock creates buying pressure on LGCY simultaneously.</div>
+      </div>
+      <div class="es">
+        <div class="es-source"><i data-lucide="building-2"></i> Flow 2 — From corporate query fees</div>
+        <div class="es-earn">50% of all corporate ETH fees → your stake</div>
+        <div class="es-note">Every brand, researcher, and AI agent querying the corpus. 40% simultaneously buys and burns LGCY permanently. You earn ETH while supply shrinks.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROOF OF KNOWLEDGE POSITIONS -->
+  <div class="sh" style="margin-top:56px;"><i data-lucide="target"></i> Proof of Knowledge Positions</div>
+  <p>Inspired by Uniswap V3 concentrated liquidity. Users who concentrate their staked LGCY into specific knowledge domains earn more per dollar than passive broad stakers. Users are LPs. Answers are liquidity. Query fees are trading fees. Tighter ranges earn more when in range.</p>
+
+  <div class="formula-section">
+    <div class="formula-eq">
+      Payout Share = <em>Answer Depth</em> × <em>Staked LGCY</em> × <em>Concentration</em>
+    </div>
+    <div class="fvars">
+      <div class="fvar fv1">
+        <div class="fvar-name"><i data-lucide="pencil-line"></i> Answer Depth</div>
+        <div class="fvar-rows">
+          <div class="fvar-row"><span class="fvar-row-label">1–10 answers</span><span class="fvar-row-val">0.5×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">11–30 answers</span><span class="fvar-row-val">1.0×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">31–60 answers</span><span class="fvar-row-val">1.5×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">61–100 answers</span><span class="fvar-row-val">2.0×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">100+ Authority</span><span class="fvar-row-val" style="color:var(--gold-light)">2.5×</span></div>
+        </div>
+      </div>
+      <div class="fvar fv2">
+        <div class="fvar-name"><i data-lucide="lock"></i> Staked LGCY</div>
+        <div class="fvar-rows">
+          <div class="fvar-row"><span class="fvar-row-label">Your capital commitment</span><span class="fvar-row-val">Amount</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">Must be backed by answers</span><span class="fvar-row-val">Required</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">Zero answers in category</span><span class="fvar-row-val" style="color:var(--red)">= Zero payout</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">More stake = more base</span><span class="fvar-row-val">Proportional</span></div>
+        </div>
+      </div>
+      <div class="fvar fv3">
+        <div class="fvar-name"><i data-lucide="target"></i> Concentration</div>
+        <div class="fvar-rows">
+          <div class="fvar-row"><span class="fvar-row-label">25% in one category</span><span class="fvar-row-val">1.25×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">50% in one category</span><span class="fvar-row-val">2.0×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">75% in one category</span><span class="fvar-row-val">3.0×</span></div>
+          <div class="fvar-row"><span class="fvar-row-label">100% in one category</span><span class="fvar-row-val" style="color:var(--gold-light)">4.0×</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hype">
+    <i data-lucide="alert-circle"></i>
+    <p>"Capital amplifies knowledge. Knowledge cannot be replaced by capital. You cannot stake LGCY into a category you haven't answered in. Contribution unlocks concentration. That order is enforced on-chain."</p>
+  </div>
+</div>
+
+<!-- CORPORATE QUERIES -->
+<div class="wrap" id="queries">
+  <div class="sh"><i data-lucide="search"></i> 05 — Corporate Queries</div>
+  <h2 class="st">Narrow queries.<br><em>Higher price. Better signal.</em></h2>
+  <div class="rule"></div>
+
+  <p>Corporations pay ETH directly to the protocol to query the corpus. No LGCY required to query — they pay ETH. That ETH splits: 50% to stakers, 40% buys and burns LGCY, 10% dev. Answers are always private. Companies receive synthesized aggregate insights only. Never individual entries. Never identities. Never raw text.</p>
+  <p>The narrower the query — the higher the price. A Tier 5 custom corpus slice is worth $7,500-25,000 in traditional market research terms. Legaicy delivers it in seconds instead of weeks.</p>
+
+  <div class="qtiers">
+    <div class="qtier">
+      <div class="qt-n">1</div>
+      <div class="qt-body">
+        <h4><i data-lucide="globe"></i> Broad Corpus Query</h4>
+        <p>"What do Legaicy users think about financial products generally?" All users, general sentiment, low signal. Replaces: $500-2,000 Nielsen survey.</p>
+      </div>
+      <div class="qt-price">
+        <span class="qt-eth">0.05 ETH</span>
+        <span class="qt-usd">~$125</span>
+        <span class="qt-split">50% stakers / 40% burn</span>
+      </div>
+    </div>
+    <div class="qtier">
+      <div class="qt-n">2</div>
+      <div class="qt-body">
+        <h4><i data-lucide="filter"></i> Category Query</h4>
+        <p>"What do Finance contributors think about crypto savings accounts?" Category specific, medium signal. Replaces: $1,000-5,000 panel research.</p>
+      </div>
+      <div class="qt-price">
+        <span class="qt-eth">0.15 ETH</span>
+        <span class="qt-usd">~$375</span>
+        <span class="qt-split">50% stakers / 40% burn</span>
+      </div>
+    </div>
+    <div class="qtier">
+      <div class="qt-n">3</div>
+      <div class="qt-body">
+        <h4><i data-lucide="award"></i> Concentrated Expert Query</h4>
+        <p>"What do Authority DeFi users with 90+ day streaks think about liquid staking?" Genuine domain expertise. Replaces: $5,000-15,000 focus group.</p>
+      </div>
+      <div class="qt-price">
+        <span class="qt-eth">0.40 ETH</span>
+        <span class="qt-usd">~$1,000</span>
+        <span class="qt-split">50% stakers / 40% burn</span>
+      </div>
+    </div>
+    <div class="qtier">
+      <div class="qt-n">4</div>
+      <div class="qt-body">
+        <h4><i data-lucide="activity"></i> Verified Biometric Query</h4>
+        <p>"What do Authority Health users with wearables showing chronic sleep deficit think about sleep supplements?" Ground truth verified. Replaces: $15,000-50,000 clinical insight.</p>
+      </div>
+      <div class="qt-price">
+        <span class="qt-eth">1.0 ETH</span>
+        <span class="qt-usd">~$2,500</span>
+        <span class="qt-split">50% stakers / 40% burn</span>
+      </div>
+    </div>
+    <div class="qtier">
+      <div class="qt-n">5</div>
+      <div class="qt-body">
+        <h4><i data-lucide="settings"></i> Custom Corpus Slice</h4>
+        <p>"Segment: crypto-native 25-40, DeFi Authority, wearable connected, 180+ streak, purchase intent: hardware wallet in 30 days." Enterprise grade. Replaces: $50,000+ research contract.</p>
+      </div>
+      <div class="qt-price">
+        <span class="qt-eth">3–10 ETH</span>
+        <span class="qt-usd">$7,500–$25,000</span>
+        <span class="qt-split">50% stakers / 40% burn</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY TABLE -->
+  <div class="sh" style="margin-top:48px;"><i data-lucide="shield"></i> Privacy — Who Sees What</div>
+
+  <table class="ptable">
+    <thead>
+      <tr><th>Who</th><th>Sees Answer Text</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>You</td>
+        <td><span class="pok"><i data-lucide="check-circle"></i> Always</span></td>
+        <td class="pnote">Full answer history in your private profile</td>
+      </tr>
+      <tr>
+        <td>Other users</td>
+        <td><span class="pno"><i data-lucide="x-circle"></i> Never</span></td>
+        <td class="pnote">No public answers. No community visibility. Ever.</td>
+      </tr>
+      <tr>
+        <td>Corporate buyers</td>
+        <td><span class="pno"><i data-lucide="x-circle"></i> Never</span></td>
+        <td class="pnote">Synthesized aggregate insights only. No raw text. No identity.</td>
+      </tr>
+      <tr>
+        <td>Legaicy AI</td>
+        <td><span class="pok"><i data-lucide="check-circle"></i> Yes — to synthesize</span></td>
+        <td class="pnote">Scores quality. Powers query synthesis. Never exposed externally.</td>
+      </tr>
+      <tr>
+        <td>On-chain</td>
+        <td><span class="pno"><i data-lucide="x-circle"></i> Never</span></td>
+        <td class="pnote">Hash only. Proves you answered. Not what you said.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="hype">
+    <i data-lucide="shield-check"></i>
+    <p>"Legaicy will never sell your identity. We sell your intelligence. Corporations receive synthesized insights from the aggregate. Never your words. Never your identity. Never individual entries. That promise is unconditional and enforced by architecture — not policy."</p>
+  </div>
+</div>
+
+
+<!-- SUPPLY DYNAMICS -->
+<div class="wrap" id="supply">
+  <div class="sh"><i data-lucide="activity"></i> 06 — LGCY Supply Dynamics</div>
+  <h2 class="st">Early participants earn<br><em>the most. By design.</em></h2>
+  <div class="rule"></div>
+
+  <p>LGCY has no hard cap. Emission is the scarcity mechanism — not an arbitrary number. As corporate query volume grows, emission automatically pulls back. The protocol self-balances without governance votes or team intervention. Ever.</p>
+
+  <!-- DYNAMIC EMISSION -->
+  <div class="sh" style="margin-top:48px;"><i data-lucide="zap"></i> Dynamic Emission Multiplier</div>
+  <p>Based on 90-day rolling query volume. First 180 days guaranteed 1.5× floor regardless of queries. After 180 days query-driven, floored at 0.5× — late joiners never completely punished.</p>
+
+  <div style="background:var(--surface);border:1px solid var(--border);overflow:hidden;margin:32px 0;">
+    <!-- Phase bars -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);">
+      <div style="background:linear-gradient(135deg,rgba(61,200,130,0.1),rgba(61,200,130,0.03));border-bottom:2px solid var(--green);padding:24px 28px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.25em;color:#3DC882;text-transform:uppercase;margin-bottom:8px;">Phase 1 — Growth</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;color:#3DC882;line-height:1;margin-bottom:6px;">2.0×</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;">0–100 queries/mo<br>Corpus needs building<br>Maximum emission</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(200,169,90,0.1),rgba(200,169,90,0.03));border-bottom:2px solid var(--gold);padding:24px 28px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Phase 2 — Transition</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:6px;">1.0×</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;">100–5,000 queries/mo<br>Corpus proven valuable<br>Standard emission</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(255,68,34,0.1),rgba(255,68,34,0.03));border-bottom:2px solid var(--red);padding:24px 28px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.25em;color:var(--red);text-transform:uppercase;margin-bottom:8px;">Phase 3 — Value</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;color:var(--red);line-height:1;margin-bottom:6px;">0.5×</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;">5,000+ queries/mo<br>Burns outpace emission<br>Supply shrinking</div>
+      </div>
+    </div>
+    <!-- Full table -->
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:12px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;">90-Day Rolling Query Volume</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:12px 20px;text-align:center;border-bottom:1px solid var(--border);font-weight:400;">Multiplier</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:12px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;">Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(61,200,130,0.03);">
+          <td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">0 queries (first 180 days)</td>
+          <td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0× <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);">guaranteed</span></td>
+          <td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Bootstrap protection — early participants always rewarded</td>
+        </tr>
+        <tr style="background:rgba(61,200,130,0.03);">
+          <td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">0 queries (after 180 days)</td>
+          <td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">No corporate interest yet — keep building</td>
+        </tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">1–100 queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.75×</td><td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Early corporate interest — still generous</td></tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">101–500 queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.5×</td><td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Corpus proving value — transition begins</td></tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">501–1,000 queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.25×</td><td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Accumulation window closing</td></tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">1,001–5,000 queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.0×</td><td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Standard — burns and emission balancing</td></tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">5,001–10,000 queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--red);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">0.75×</td><td style="padding:10px 20px;font-size:11px;color:var(--muted);border-bottom:1px solid rgba(30,30,30,0.5);">Burns accelerating — supply pressure building</td></tr>
+        <tr><td style="padding:10px 20px;font-size:12px;color:rgba(234,230,222,0.7);">10,000+ queries/month</td><td style="padding:10px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--red);text-align:center;">0.5× <span style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);">floor</span></td><td style="padding:10px 20px;font-size:11px;color:var(--muted);">Burns outpace emission — LGCY deflationary</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- COMPLETE FORMULA -->
+  <div class="sh" style="margin-top:48px;"><i data-lucide="calculator"></i> Complete Emission Formula — Final</div>
+
+  <div style="background:var(--surface);border:1px solid rgba(200,169,90,0.2);padding:36px;margin:32px 0;text-align:center;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,22px);color:var(--text);margin-bottom:28px;line-height:1.6;">
+      LGCY = 100 × <span style="color:var(--gold)">Score</span> × <span style="color:var(--blue)">Tier</span> × <span style="color:var(--red)">Q# Bonus</span> × <span style="color:#3DC882">Dynamic</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+      <!-- Score -->
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:16px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i data-lucide="star" style="width:10px;height:10px"></i> Answer Score</div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">0–20</span><span style="color:var(--text);font-weight:600;">0.5×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">21–40</span><span style="color:var(--text);font-weight:600;">0.625×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">41–60</span><span style="color:var(--text);font-weight:600;">0.75×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">61–80</span><span style="color:var(--text);font-weight:600;">0.875×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">81–100</span><span style="color:var(--gold-light);font-weight:700;">1.0×</span></div>
+        </div>
+      </div>
+      <!-- Tier -->
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:16px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--blue);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i data-lucide="layers" style="width:10px;height:10px"></i> Data Tier</div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">C General</span><span style="color:var(--text);font-weight:600;">1.0×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">B Psycho</span><span style="color:var(--text);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">B Crypto</span><span style="color:var(--text);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">A Finance</span><span style="color:var(--text);font-weight:600;">2.0×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">A Health</span><span style="color:var(--text);font-weight:600;">2.0×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">S Intent</span><span style="color:var(--gold-light);font-weight:700;">2.5×</span></div>
+        </div>
+      </div>
+      <!-- Q# Bonus -->
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:16px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--red);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i data-lucide="hash" style="width:10px;height:10px"></i> Q# Bonus</div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q1</span><span style="color:var(--text);font-weight:600;">1.0×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q2</span><span style="color:var(--text);font-weight:600;">1.1×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q3–Q4</span><span style="color:var(--text);font-weight:600;">1.2–1.3×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q5–Q7</span><span style="color:var(--text);font-weight:600;">1.4–1.6×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q8–Q9</span><span style="color:var(--text);font-weight:600;">1.7–1.8×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">Q10</span><span style="color:var(--gold-light);font-weight:700;">2.0×</span></div>
+        </div>
+      </div>
+      <!-- Dynamic -->
+      <div style="background:var(--surface2);border:1px solid var(--border);padding:16px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:#3DC882;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;"><i data-lucide="activity" style="width:10px;height:10px"></i> Dynamic</div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">0 queries</span><span style="color:#3DC882;font-weight:700;">2.0×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">1–100/mo</span><span style="color:#3DC882;font-weight:600;">1.75×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">101–500</span><span style="color:var(--gold-light);font-weight:600;">1.5×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">500–5k</span><span style="color:var(--gold-light);font-weight:600;">1.0–1.25×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">5k–10k</span><span style="color:var(--red);font-weight:600;">0.75×</span></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;"><span style="color:var(--muted);">10k+</span><span style="color:var(--red);font-weight:700;">0.5× floor</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REAL EXAMPLES -->
+  <div class="sh" style="margin-top:48px;"><i data-lucide="table"></i> Real Emission Examples</div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);overflow:hidden;margin:32px 0;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:var(--surface2);">
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;">Scenario</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:center;border-bottom:1px solid var(--border);font-weight:400;">Score</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:center;border-bottom:1px solid var(--border);font-weight:400;">Tier</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:center;border-bottom:1px solid var(--border);font-weight:400;">Q#</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:center;border-bottom:1px solid var(--border);font-weight:400;">Dynamic</th>
+          <th style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:right;border-bottom:1px solid var(--border);font-weight:400;">LGCY Earned</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(61,200,130,0.04);">
+          <td style="padding:12px 18px;font-size:12px;color:rgba(234,230,222,0.8);border-bottom:1px solid rgba(30,30,30,0.5);">Early / perfect / Tier S / Q10</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.5×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:12px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#3DC882;text-align:right;border-bottom:1px solid rgba(30,30,30,0.5);">1,000</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 18px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">Early / perfect / Tier A / Q5</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--text);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--text);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.4×</td>
+          <td style="padding:12px 18px;font-size:12px;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:12px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold-light);text-align:right;border-bottom:1px solid rgba(30,30,30,0.5);">560</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 18px;font-size:12px;color:rgba(234,230,222,0.7);border-bottom:1px solid rgba(30,30,30,0.5);">Mid / good / Tier B / Q3</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--text);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">0.875×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--text);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.5×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--text);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.2×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.0×</td>
+          <td style="padding:12px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--text);text-align:right;border-bottom:1px solid rgba(30,30,30,0.5);">158</td>
+        </tr>
+        <tr style="background:rgba(255,68,34,0.03);">
+          <td style="padding:12px 18px;font-size:12px;color:rgba(234,230,222,0.7);">Late / low score / Tier C / Q1</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--muted);text-align:center;">0.5×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--muted);text-align:center;">1.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--muted);text-align:center;">1.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:var(--red);text-align:center;">0.5×</td>
+          <td style="padding:12px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--muted);text-align:right;">25</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hype">
+    <i data-lucide="clock"></i>
+    <p>"Early participant, perfect score, Tier S, Q10, zero queries = 1,000 LGCY per answer. Late participant, low score, Tier C, Q1, heavy queries = 25 LGCY per answer. 40× difference. This is why starting now matters."</p>
+  </div>
+
+  <!-- CROSSOVER POINT -->
+  <div class="sh" style="margin-top:48px;"><i data-lucide="git-merge"></i> The Crossover Point</div>
+  <p>The moment monthly burns exceed monthly emission — LGCY becomes net deflationary. Price pressure becomes structural, not speculative. Early stakers hold appreciated positions generating compounding ETH yield. This is the moon moment the protocol is designed to reach.</p>
+
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:2px;align-items:center;margin:32px 0;">
+    <div style="background:var(--surface);border:1px solid var(--border);padding:24px 28px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:#3DC882;text-transform:uppercase;margin-bottom:8px;">Emission</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#3DC882;">Slowing</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;">Dynamic multiplier drops<br>as queries increase</div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(200,169,90,0.15),rgba(200,169,90,0.05));border:1px solid rgba(200,169,90,0.3);padding:24px 20px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;">✕</div>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;margin-top:6px;">Crossover</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:24px 28px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--red);text-transform:uppercase;margin-bottom:8px;">Burn</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--red);">Accelerating</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;">35% of every corporate<br>query ETH buying & burning</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ROI -->
+<div class="wrap" id="roi">
+  <div class="sh"><i data-lucide="trending-up"></i> 07 — Realistic ROI</div>
+  <h2 class="st">Numbers that<br><em>make you drool.</em></h2>
+  <div class="rule"></div>
+
+  <p>Three scenarios. Real numbers based on actual market research pricing data. Corporate query fees are dramatically cheaper than traditional research alternatives — that's how you get adoption. Even at conservative query volumes the staker income is significant.</p>
+
+  <div class="scenarios">
+    <div class="scenario">
+      <div class="scenario-head">
+        <div class="scenario-head-top">
+          <i data-lucide="users"></i>
+          <span class="scenario-title">Early Days</span>
+        </div>
+        <div class="scenario-users">100 users — Phase 2 launched</div>
+        <div class="scenario-pool">~25 ETH/mo query pool (est.)</div>
+      </div>
+      <div class="scenario-body">
+        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val">~$180</span></div>
+        <div class="srow"><span class="srow-label">Focused whale / annual</span><span class="srow-val">~$8,400</span></div>
+        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~10 ETH worth</span></div>
+        <div class="srow"><span class="srow-label">Real value of early entry</span><span class="srow-val free">Position ownership</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Early query income is not the draw. Building position before demand arrives is. Like mining Bitcoin in 2010.</div>
+      </div>
+    </div>
+    <div class="scenario">
+      <div class="scenario-head">
+        <div class="scenario-head-top">
+          <i data-lucide="bar-chart-2"></i>
+          <span class="scenario-title">Growing</span>
+        </div>
+        <div class="scenario-users">1,000 users — 6 months in</div>
+        <div class="scenario-pool">~250 ETH/mo query pool (est.)</div>
+      </div>
+      <div class="scenario-body">
+        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val">~$1,800</span></div>
+        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val">~$18,000</span></div>
+        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$84,000</span></div>
+        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~100 ETH worth</span></div>
+        <div class="srow"><span class="srow-label">Whale ETH invested</span><span class="srow-val">~$2,000 bootstrap</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">ROI positive by month 8-12. Real earnings meaningful across all user types.</div>
+      </div>
+    </div>
+    <div class="scenario">
+      <div class="scenario-head">
+        <div class="scenario-head-top">
+          <i data-lucide="rocket"></i>
+          <span class="scenario-title">Scale</span>
+        </div>
+        <div class="scenario-users">10,000 users — 18 months in</div>
+        <div class="scenario-pool">~2,500 ETH/mo query pool (est.)</div>
+      </div>
+      <div class="scenario-body">
+        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val free">~$18,000 — $0 invested</span></div>
+        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val big">~$180,000</span></div>
+        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$840,000+</span></div>
+        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~1,000 ETH worth</span></div>
+        <div class="srow"><span class="srow-label">Patient user invested</span><span class="srow-val free">$0 — pure upside</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Patient user earns $18k/year having never paid more than $2.50/day. The compounding is undeniable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hype">
+    <i data-lucide="clock"></i>
+    <p>"The early whale owns the pool. The patient builder owns the streak. What you build today starts paying in month 4. What you build in month 4 pays you in year 2. The best time was launch day. The second best time is today."</p>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="wrap" id="roadmap">
+  <div class="sh"><i data-lucide="map"></i> 08 — Roadmap</div>
+  <h2 class="st">Build the seed.<br><em>Grow the legacy.</em></h2>
+  <div class="rule"></div>
+
+  <div class="phases">
+    <div class="phase now">
+      <i data-lucide="sprout" class="phase-icon"></i>
+      <div class="phase-n">Phase 01</div>
+      <h3>Prove the Habit</h3>
+      <ul>
+        <li><i data-lucide="check-circle"></i> legaicy.win domain secured</li>
+        <li><i data-lucide="circle"></i> Whitepaper live at legaicy.win</li>
+        <li><i data-lucide="circle"></i> Telegram bot — daily questions</li>
+        <li><i data-lucide="circle"></i> 500-question bank built by tier</li>
+        <li><i data-lucide="circle"></i> 30 days, 20+ consistent users</li>
+        <li><i data-lucide="circle"></i> DXN/NXD community seeded</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <i data-lucide="zap" class="phase-icon"></i>
+      <div class="phase-n">Phase 02</div>
+      <h3>Launch the Protocol</h3>
+      <ul>
+        <li><i data-lucide="circle"></i> Contracts audited — ETH/Base/OP</li>
+        <li><i data-lucide="circle"></i> LGCY launches — no presale</li>
+        <li><i data-lucide="circle"></i> Staking + positions live</li>
+        <li><i data-lucide="circle"></i> Personal AI profile per wallet</li>
+        <li><i data-lucide="circle"></i> Wearable API integrations</li>
+        <li><i data-lucide="circle"></i> Behavioral biometrics bot detection</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <i data-lucide="globe" class="phase-icon"></i>
+      <div class="phase-n">Phase 03</div>
+      <h3>Open the Economy</h3>
+      <ul>
+        <li><i data-lucide="circle"></i> PulseChain, POL, BNB, TAC/TON</li>
+        <li><i data-lucide="circle"></i> Corporate query API opens</li>
+        <li><i data-lucide="circle"></i> First ETH to stakers from queries</li>
+        <li><i data-lucide="circle"></i> Browser extension Phase 1</li>
+        <li><i data-lucide="circle"></i> Mobile app — Apple Health</li>
+        <li><i data-lucide="circle"></i> Enterprise contracts $10k+/mo</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+<div class="wrap" id="principles">
+  <div class="sh"><i data-lucide="anchor"></i> 09 — Principles</div>
+  <h2 class="st">The rules we<br><em>won't break.</em></h2>
+  <div class="rule"></div>
+
+  <div class="principles">
+    <div class="prin"><div class="prin-icon"><i data-lucide="ban"></i></div><div class="prin-body"><h4>No Profit From The Work of Others</h4><p>6% dev fee only, hardcoded on-chain. No treasury access. No hidden allocation. The founding team earns LGCY the same way you do — by answering questions.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="lock"></i></div><div class="prin-body"><h4>Immutable Entries</h4><p>Once locked, an answer cannot be edited or deleted. Not by you, not by us, not by anyone. That permanence is what makes the corpus trustworthy and the data valuable.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="eye"></i></div><div class="prin-body"><h4>Transparent On-Chain</h4><p>Every fee, split, and burn verifiable publicly. No black box. No trust required. Verify everything yourself at any time on any block explorer.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="x-circle"></i></div><div class="prin-body"><h4>No Presale</h4><p>No insider round. No VC discount. No whale advantage at launch. LGCY is earned through participation only — same rules for everyone including the founding team.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="shield"></i></div><div class="prin-body"><h4>Answers Always Private</h4><p>Individual answers are never exposed. Corporations receive aggregate synthesis only. Your words, your identity, your individual entries — protected unconditionally by architecture not policy.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="brain"></i></div><div class="prin-body"><h4>Contribution Beats Capital</h4><p>The three-variable position formula ensures knowledge and time structurally outperform raw capital. Zero answers in a category = zero earnings from that category. Always.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="link-2-off"></i></div><div class="prin-body"><h4>Independent Chains</h4><p>No bridges. No shared supply. Each chain is its own flywheel with independent token, liquidity, and economics. The brand is the connective tissue — not the contract.</p></div></div>
+    <div class="prin"><div class="prin-icon"><i data-lucide="user-x"></i></div><div class="prin-body"><h4>We Sell Intelligence, Not Identity</h4><p>Legaicy will never sell your identity. We sell your intelligence. There is a difference and it matters. No identity revelation. No external account linking required. Ever.</p></div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2 class="cta-title">Start building your<br><em>Legaicy</em> today.</h2>
+  <p class="cta-sub">One answer. One day at a time. The compounding is where the value lives.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-p"><i data-lucide="send"></i> Join the Community</a>
+    <a href="#" class="btn-s"><i data-lucide="file-text"></i> Read the Docs</a>
+  </div>
+  <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;position:relative;z-index:2;">
+    legaicy.win — Whitepaper v4.0 — 2026 — All mechanics subject to community governance after launch
+  </div>
+</div>
+
+<footer>
+  <div class="foot-logo">Legaicy</div>
+  <div class="foot-txt">No profit from the work of others — ever.</div>
+  <div class="foot-txt">© 2026 Legaicy Protocol</div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.06 });
+
+  document.querySelectorAll('.wrap, .cta').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.85s ease, transform 0.85s ease';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
