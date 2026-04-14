@@ -1458,12 +1458,13 @@
       <div style="background:var(--surface2);border:1px solid var(--border);padding:20px;">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--red);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i data-lucide="bar-chart-2" style="width:11px;height:11px"></i> Question Number</div>
         <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;">
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q1–Q5</span><span style="color:var(--text);font-weight:600;">Full reward</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q6</span><span style="color:var(--text);font-weight:600;">0.8×</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q7</span><span style="color:var(--text);font-weight:600;">0.6×</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q8</span><span style="color:var(--text);font-weight:600;">0.4×</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q9</span><span style="color:var(--text);font-weight:600;">0.2×</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q10</span><span style="color:var(--red);font-weight:600;">0.1× — flex only</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q1</span><span style="color:var(--text);font-weight:600;">1.0× base</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q2–Q5</span><span style="color:#3DC882;font-weight:600;">1.1–1.4×</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q6</span><span style="color:#3DC882;font-weight:600;">1.5× bonus</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q7</span><span style="color:#3DC882;font-weight:600;">1.6× bonus</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q8</span><span style="color:#3DC882;font-weight:600;">1.7× bonus</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q9</span><span style="color:#3DC882;font-weight:600;">1.8× bonus</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Q10</span><span style="color:var(--gold-light);font-weight:700;">2.0× bonus</span></div>
         </div>
       </div>
     </div>
@@ -1485,21 +1486,21 @@
         <th>ETH (Maturity)</th>
         <th>ETH (Bootstrap)</th>
         <th>USD (~$2,500 ETH)</th>
-        <th>LGCY</th>
+        <th>LGCY Bonus</th>
         <th>Who</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td><span class="qn">1</span></td><td>0.001</td><td>0.0001</td><td>$2.50 / $0.25</td><td>Full</td><td>Everyone — the daily ritual</td></tr>
-      <tr><td><span class="qn">2</span></td><td>0.002</td><td>0.0002</td><td>$5.00</td><td>Full</td><td>Engaged users</td></tr>
-      <tr><td><span class="qn">3</span></td><td>0.005</td><td>0.0005</td><td>$12.50</td><td>Full</td><td>Active builders</td></tr>
-      <tr><td><span class="qn">4</span></td><td>0.011</td><td>0.0011</td><td>$27.50</td><td>Full</td><td>Power users</td></tr>
-      <tr><td><span class="qn">5</span></td><td>0.025</td><td>0.0025</td><td>$62.50</td><td>Full</td><td>Serious builders</td></tr>
-      <tr><td><span class="qn">6</span></td><td>0.062</td><td>0.0062</td><td>$155</td><td class="q-dim">0.8×</td><td>Whale territory</td></tr>
-      <tr><td><span class="qn">7</span></td><td>0.125</td><td>0.0125</td><td>$312.50</td><td class="q-dim">0.6×</td><td>Double starts</td></tr>
-      <tr><td><span class="qn">8</span></td><td>0.250</td><td>0.025</td><td>$625</td><td class="q-dim">0.4×</td><td>Ultra committed</td></tr>
-      <tr><td><span class="qn">9</span></td><td>0.500</td><td>0.05</td><td>$1,250</td><td class="q-dim">0.2×</td><td>Legendary</td></tr>
-      <tr><td><span class="qn">10</span></td><td>1.000</td><td>0.1</td><td>$2,500<span class="q-one-eth">THE 1 ETH ENTRY</span></td><td class="q-dim">0.1×</td><td>Protocol believers</td></tr>
+      <tr><td><span class="qn">1</span></td><td>0.001</td><td>0.0001</td><td>$2.50 / $0.25</td><td style="color:var(--text);font-weight:600;">1.0× base</td><td>Everyone — the daily ritual</td></tr>
+      <tr><td><span class="qn">2</span></td><td>0.002</td><td>0.0002</td><td>$5.00</td><td style="color:#3DC882;font-weight:600;">1.1× bonus</td><td>Engaged users</td></tr>
+      <tr><td><span class="qn">3</span></td><td>0.005</td><td>0.0005</td><td>$12.50</td><td style="color:#3DC882;font-weight:600;">1.2× bonus</td><td>Active builders</td></tr>
+      <tr><td><span class="qn">4</span></td><td>0.011</td><td>0.0011</td><td>$27.50</td><td style="color:#3DC882;font-weight:600;">1.3× bonus</td><td>Power users</td></tr>
+      <tr><td><span class="qn">5</span></td><td>0.025</td><td>0.0025</td><td>$62.50</td><td style="color:#3DC882;font-weight:600;">1.4× bonus</td><td>Serious builders</td></tr>
+      <tr><td><span class="qn">6</span></td><td>0.062</td><td>0.0062</td><td>$155</td><td style="color:#3DC882;font-weight:600;">1.5× bonus</td><td>Whale territory begins</td></tr>
+      <tr><td><span class="qn">7</span></td><td>0.125</td><td>0.0125</td><td>$312.50</td><td style="color:#3DC882;font-weight:600;">1.6× bonus</td><td>Clean double starts</td></tr>
+      <tr><td><span class="qn">8</span></td><td>0.250</td><td>0.025</td><td>$625</td><td style="color:#3DC882;font-weight:600;">1.7× bonus</td><td>Ultra committed</td></tr>
+      <tr><td><span class="qn">9</span></td><td>0.500</td><td>0.05</td><td>$1,250</td><td style="color:#3DC882;font-weight:600;">1.8× bonus</td><td>Legendary</td></tr>
+      <tr><td><span class="qn">10</span></td><td>1.000</td><td>0.1</td><td>$2,500<span class="q-one-eth">THE 1 ETH ENTRY</span></td><td style="color:var(--gold-light);font-weight:700;">2.0× bonus</td><td>Maximum reward</td></tr>
       <tr><td><strong>TOTAL</strong></td><td><strong>~1.981 ETH</strong></td><td><strong>~0.198 ETH</strong></td><td><strong>~$4,952</strong></td><td></td><td>Full day maximum</td></tr>
     </tbody>
   </table>
@@ -1661,8 +1662,8 @@
   <h2 class="st">Narrow queries.<br><em>Higher price. Better signal.</em></h2>
   <div class="rule"></div>
 
-  <p>Corporations pay ETH directly to the protocol to query the corpus. No LGCY required to query — they pay ETH. That ETH splits: 50% to stakers, 40% buys and burns LGCY, 10% dev. Answers are always private. Companies receive synthesized aggregate insights only. Never individual entries. Never identities. Never raw text.</p>
-  <p>The narrower the query — the higher the price. A Tier 5 custom corpus slice is worth $7,500-25,000 in traditional market research terms. Legaicy delivers it in seconds instead of weeks.</p>
+  <p>Corporations pay ETH directly to the protocol to query the corpus. That ETH splits: 45% to stakers, 35% buys and burns LGCY, 10% LP, 10% dev. Answers are always private. Companies receive synthesized aggregate insights only. Never individual entries. Never identities. Never raw text.</p>
+  <p>The narrower the query the higher the price. Pricing is dramatically cheaper than traditional market research — that's intentional. A Tier 3 query that costs 0.40 ETH replaces a $5,000-15,000 focus group. The value proposition is obvious. Early corporate customers use Buy & Lock vault LGCY for free trials before committing to paid access.</p>
 
   <div class="qtiers">
     <div class="qtier">
@@ -1674,7 +1675,7 @@
       <div class="qt-price">
         <span class="qt-eth">0.05 ETH</span>
         <span class="qt-usd">~$125</span>
-        <span class="qt-split">50% stakers / 40% burn</span>
+        <span class="qt-split">45% stakers / 35% burn / 10% LP</span>
       </div>
     </div>
     <div class="qtier">
@@ -1686,7 +1687,7 @@
       <div class="qt-price">
         <span class="qt-eth">0.15 ETH</span>
         <span class="qt-usd">~$375</span>
-        <span class="qt-split">50% stakers / 40% burn</span>
+        <span class="qt-split">45% stakers / 35% burn / 10% LP</span>
       </div>
     </div>
     <div class="qtier">
@@ -1698,7 +1699,7 @@
       <div class="qt-price">
         <span class="qt-eth">0.40 ETH</span>
         <span class="qt-usd">~$1,000</span>
-        <span class="qt-split">50% stakers / 40% burn</span>
+        <span class="qt-split">45% stakers / 35% burn / 10% LP</span>
       </div>
     </div>
     <div class="qtier">
@@ -1710,7 +1711,7 @@
       <div class="qt-price">
         <span class="qt-eth">1.0 ETH</span>
         <span class="qt-usd">~$2,500</span>
-        <span class="qt-split">50% stakers / 40% burn</span>
+        <span class="qt-split">45% stakers / 35% burn / 10% LP</span>
       </div>
     </div>
     <div class="qtier">
@@ -1722,7 +1723,7 @@
       <div class="qt-price">
         <span class="qt-eth">3–10 ETH</span>
         <span class="qt-usd">$7,500–$25,000</span>
-        <span class="qt-split">50% stakers / 40% burn</span>
+        <span class="qt-split">45% stakers / 35% burn / 10% LP</span>
       </div>
     </div>
   </div>
@@ -1909,7 +1910,7 @@
           <td style="padding:12px 18px;font-size:12px;color:rgba(234,230,222,0.8);border-bottom:1px solid rgba(30,30,30,0.5);">Early / perfect / Tier S / Q10</td>
           <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">1.0×</td>
           <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.5×</td>
-          <td style="padding:12px 18px;font-size:12px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
+          <td style="padding:12px 18px;font-size:12px;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0× bonus</td>
           <td style="padding:12px 18px;font-size:12px;color:#3DC882;text-align:center;border-bottom:1px solid rgba(30,30,30,0.5);">2.0×</td>
           <td style="padding:12px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#3DC882;text-align:right;border-bottom:1px solid rgba(30,30,30,0.5);">1,000</td>
         </tr>
@@ -1943,7 +1944,7 @@
 
   <div class="hype">
     <i data-lucide="clock"></i>
-    <p>"Early participant, perfect score, Tier S, Q10, zero queries = 1,000 LGCY per answer. Late participant, low score, Tier C, Q1, heavy queries = 25 LGCY per answer. 40× difference. This is why starting now matters."</p>
+    <p>"The early participant builds position when LGCY is abundant and cheap. The late participant earns less LGCY per answer and owns a smaller slice of a more valuable pool. The protocol rewards conviction and consistency above everything else."</p>
   </div>
 
   <!-- CROSSOVER POINT -->
@@ -1972,10 +1973,10 @@
 <!-- ROI -->
 <div class="wrap" id="roi">
   <div class="sh"><i data-lucide="trending-up"></i> 07 — Realistic ROI</div>
-  <h2 class="st">Numbers that<br><em>make you drool.</em></h2>
+  <h2 class="st">What you could<br><em>realistically earn.</em></h2>
   <div class="rule"></div>
 
-  <p>Three scenarios. Real numbers based on actual market research pricing data. Corporate query fees are dramatically cheaper than traditional research alternatives — that's how you get adoption. Even at conservative query volumes the staker income is significant.</p>
+  <p>Three honest scenarios. Early stage income is minimal — that is not the point of being early. The point is building position before corporate adoption arrives. When corporations start querying at scale, the people who built the deepest positions earn the most. All numbers assume $2,500 ETH price and are projections only.</p>
 
   <div class="scenarios">
     <div class="scenario">
@@ -1985,14 +1986,14 @@
           <span class="scenario-title">Early Days</span>
         </div>
         <div class="scenario-users">100 users — Phase 2 launched</div>
-        <div class="scenario-pool">~25 ETH/mo query pool (est.)</div>
+        <div class="scenario-pool">~1-2 ETH/mo query pool (realistic)</div>
       </div>
       <div class="scenario-body">
-        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val">~$180</span></div>
-        <div class="srow"><span class="srow-label">Focused whale / annual</span><span class="srow-val">~$8,400</span></div>
-        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~10 ETH worth</span></div>
-        <div class="srow"><span class="srow-label">Real value of early entry</span><span class="srow-val free">Position ownership</span></div>
-        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Early query income is not the draw. Building position before demand arrives is. Like mining Bitcoin in 2010.</div>
+        <div class="srow"><span class="srow-label">Corporate query income</span><span class="srow-val">Near zero</span></div>
+        <div class="srow"><span class="srow-label">Staking ETH yield</span><span class="srow-val">Minimal — from question fees only</span></div>
+        <div class="srow"><span class="srow-label">Real value of this stage</span><span class="srow-val free">Position ownership</span></div>
+        <div class="srow"><span class="srow-label">LGCY earned daily</span><span class="srow-val">100–1,000 per answer</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Honest truth: income is negligible at 100 users. The entire value of being here is accumulating LGCY and position depth before corporate adoption. Like mining Bitcoin in 2010 — the income wasn't the point.</div>
       </div>
     </div>
     <div class="scenario">
@@ -2001,16 +2002,16 @@
           <i data-lucide="bar-chart-2"></i>
           <span class="scenario-title">Growing</span>
         </div>
-        <div class="scenario-users">1,000 users — 6 months in</div>
-        <div class="scenario-pool">~250 ETH/mo query pool (est.)</div>
+        <div class="scenario-users">1,000 users — 6-12 months in</div>
+        <div class="scenario-pool">~8-30 ETH/mo query pool (realistic)</div>
       </div>
       <div class="scenario-body">
-        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val">~$1,800</span></div>
-        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val">~$18,000</span></div>
-        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$84,000</span></div>
-        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~100 ETH worth</span></div>
-        <div class="srow"><span class="srow-label">Whale ETH invested</span><span class="srow-val">~$2,000 bootstrap</span></div>
-        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">ROI positive by month 8-12. Real earnings meaningful across all user types.</div>
+        <div class="srow"><span class="srow-label">5-10 paying corps</span><span class="srow-val">50-200 queries/month</span></div>
+        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val">~$200-800</span></div>
+        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val">~$2,000-8,000</span></div>
+        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$9,000-33,000</span></div>
+        <div class="srow"><span class="srow-label">Whale ETH invested</span><span class="srow-val">~$200 bootstrap</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Real income begins here. ROI positive by month 8-12 for serious participants. Corporate adoption is the key variable — everything hinges on query volume growth.</div>
       </div>
     </div>
     <div class="scenario">
@@ -2019,23 +2020,23 @@
           <i data-lucide="rocket"></i>
           <span class="scenario-title">Scale</span>
         </div>
-        <div class="scenario-users">10,000 users — 18 months in</div>
-        <div class="scenario-pool">~2,500 ETH/mo query pool (est.)</div>
+        <div class="scenario-users">10,000 users — 18+ months in</div>
+        <div class="scenario-pool">~75-300 ETH/mo query pool (realistic)</div>
       </div>
       <div class="scenario-body">
-        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val free">~$18,000 — $0 invested</span></div>
-        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val big">~$180,000</span></div>
-        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$840,000+</span></div>
-        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~1,000 ETH worth</span></div>
-        <div class="srow"><span class="srow-label">Patient user invested</span><span class="srow-val free">$0 — pure upside</span></div>
-        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Patient user earns $18k/year having never paid more than $2.50/day. The compounding is undeniable.</div>
+        <div class="srow"><span class="srow-label">50+ paying corps</span><span class="srow-val">500-2,000 queries/month</span></div>
+        <div class="srow"><span class="srow-label">Patient user / annual</span><span class="srow-val free">~$1,500-6,000 — $0 invested</span></div>
+        <div class="srow"><span class="srow-label">Focused expert / annual</span><span class="srow-val big">~$15,000-60,000</span></div>
+        <div class="srow"><span class="srow-label">Whale / annual</span><span class="srow-val big">~$70,000-270,000</span></div>
+        <div class="srow"><span class="srow-label">LGCY burned / month</span><span class="srow-val">~30-120 ETH worth</span></div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.5;">Patient user earns real passive income having never paid more than $2.50/day. Whale ROI is extraordinary if protocol reaches this scale. Corporate adoption drives everything.</div>
       </div>
     </div>
   </div>
 
   <div class="hype">
     <i data-lucide="clock"></i>
-    <p>"The early whale owns the pool. The patient builder owns the streak. What you build today starts paying in month 4. What you build in month 4 pays you in year 2. The best time was launch day. The second best time is today."</p>
+    <p>"The early whale owns the pool. The patient builder owns the streak. Early stage income is negligible — that is not the point. The point is accumulating position before corporate adoption arrives. When it does, the people who built early own the most valuable positions. The best time was launch day. The second best time is today."</p>
   </div>
 </div>
 
