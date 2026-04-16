@@ -477,6 +477,62 @@
       text-align: center;
     }
 
+    .wallet-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .wallet-modal.show {
+      display: flex;
+    }
+
+    .wallet-modal-card {
+      width: min(460px, 96vw);
+      background: #060606;
+      border: 1px solid #C8A95A;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .wallet-modal-card h3 {
+      margin: 0 0 12px;
+      color: var(--gold-light);
+      font: 600 2rem/1 "Cormorant Garamond", serif;
+    }
+
+    .wallet-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .wallet-option {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgba(200, 169, 90, 0.45);
+      border-radius: 9px;
+      padding: 11px 12px;
+      color: #eadfbe;
+      background: #0d0d0d;
+      font-family: "DM Mono", monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .wallet-option:hover {
+      background: #17130a;
+      color: var(--gold-light);
+    }
+
     .triple-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 
     .community-card,
@@ -596,7 +652,7 @@
           <a href="#queries">Queries</a>
           <a href="#roi">ROI</a>
         </div>
-        <a class="btn btn-outline" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App</a>
+        <a class="btn btn-outline launch-app-trigger" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App</a>
       </div>
     </div>
   </nav>
@@ -612,7 +668,7 @@
       </h1>
       <p class="fade-up">Answer daily questions. Build your corpus. Earn LGCY. Make corporations pay for your data. You get the revenue.</p>
       <div class="cta-row fade-up">
-        <a class="btn btn-primary" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App -> app.legaicy.win</a>
+        <a class="btn btn-primary launch-app-trigger" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App -> app.legaicy.win</a>
         <a class="btn btn-outline" href="https://legaicy.win" target="_blank" rel="noopener noreferrer">Read Whitepaper</a>
       </div>
       <div class="stats-grid fade-up">
@@ -683,7 +739,7 @@
           </div>
           <div class="legend-grid">
             <div class="legend-card"><strong>65% STAKERS</strong>Primary ETH rewards to active stakers.</div>
-            <div class="legend-card"><strong>20% BUY &amp; LOCK</strong>Market buy and treasury lock dynamics.</div>
+            <div class="legend-card"><strong>20% BUY &amp; BURN</strong>Community treasury buys LGCY and burns permanently.</div>
             <div class="legend-card"><strong>9% LP</strong>Liquidity depth and market stability support.</div>
             <div class="legend-card"><strong>6% DEV</strong>Protocol maintenance and ongoing delivery.</div>
           </div>
@@ -703,6 +759,19 @@
             <div class="legend-card"><strong>10% DEV</strong>Security, infra, and protocol operations.</div>
           </div>
         </article>
+      </div>
+      <div class="panel fade-up" style="margin-top:14px;">
+        <h3 class="list-title">Community Callable Buy &amp; Burn Functions</h3>
+        <table class="data-table">
+          <thead>
+            <tr><th>Function</th><th>Effect</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>executeBuyAndBurn()</td><td>Anyone triggers buyback execution, purchases LGCY off market, and burns forever.</td></tr>
+            <tr><td>addLiquidity()</td><td>Adds protocol ETH/LGCY liquidity to deepen the pool and reduce slippage.</td></tr>
+            <tr><td>claimLpFees()</td><td>Harvests LP trading fees back into the community-controlled treasury.</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -899,30 +968,31 @@
   <section class="section">
     <div class="container">
       <h2 class="fade-up">Question Pricing - True Doubling, No Cap</h2>
-      <p class="lead fade-up">Question price doubles forever, and Q# bonus increases by +0.1x forever. Price is the natural deterrent, not a protocol cap.</p>
+      <p class="lead fade-up">Base price starts at $0.25 (0.0001 ETH). Price doubles forever, and Q# bonus increases by +0.1x forever. Price is the natural deterrent, not a protocol cap.</p>
       <div class="panel fade-up">
         <table class="data-table">
           <thead>
             <tr>
               <th>Question #</th>
               <th>Price (ETH)</th>
+              <th>Approx USD</th>
               <th>Q# Bonus</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Q1</td><td>0.001</td><td>1.0x</td></tr>
-            <tr><td>Q2</td><td>0.002</td><td>1.1x</td></tr>
-            <tr><td>Q3</td><td>0.004</td><td>1.2x</td></tr>
-            <tr><td>Q4</td><td>0.008</td><td>1.3x</td></tr>
-            <tr><td>Q5</td><td>0.016</td><td>1.4x</td></tr>
-            <tr><td>Q6</td><td>0.032</td><td>1.5x</td></tr>
-            <tr><td>Q7</td><td>0.064</td><td>1.6x</td></tr>
-            <tr><td>Q8</td><td>0.128</td><td>1.7x</td></tr>
-            <tr><td>Q9</td><td>0.256</td><td>1.8x</td></tr>
-            <tr><td>Q10</td><td>0.512</td><td>1.9x</td></tr>
-            <tr><td>Q11</td><td>1.024</td><td>2.0x</td></tr>
-            <tr><td>Q12</td><td>2.048</td><td>2.1x</td></tr>
-            <tr><td>Q12+</td><td>Doubles forever</td><td>+0.1x per question forever</td></tr>
+            <tr><td>Q1</td><td>0.0001</td><td>$0.25</td><td>1.0x</td></tr>
+            <tr><td>Q2</td><td>0.0002</td><td>$0.50</td><td>1.1x</td></tr>
+            <tr><td>Q3</td><td>0.0004</td><td>$1.00</td><td>1.2x</td></tr>
+            <tr><td>Q4</td><td>0.0008</td><td>$2.00</td><td>1.3x</td></tr>
+            <tr><td>Q5</td><td>0.0016</td><td>$4.00</td><td>1.4x</td></tr>
+            <tr><td>Q6</td><td>0.0032</td><td>$8.00</td><td>1.5x</td></tr>
+            <tr><td>Q7</td><td>0.0064</td><td>$16.00</td><td>1.6x</td></tr>
+            <tr><td>Q8</td><td>0.0128</td><td>$32.00</td><td>1.7x</td></tr>
+            <tr><td>Q9</td><td>0.0256</td><td>$64.00</td><td>1.8x</td></tr>
+            <tr><td>Q10</td><td>0.0512</td><td>$128.00</td><td>1.9x</td></tr>
+            <tr><td>Q11</td><td>0.1024</td><td>$256.00</td><td>2.0x</td></tr>
+            <tr><td>Q12</td><td>0.2048</td><td>$512.00</td><td>2.1x</td></tr>
+            <tr><td>Q12+</td><td>Doubles forever</td><td>Doubles forever</td><td>+0.1x per question forever</td></tr>
           </tbody>
         </table>
       </div>
@@ -1009,7 +1079,7 @@
   <section class="section">
     <div class="container">
       <h2 class="trust-section-title fade-up">Your Streak Is Your Key</h2>
-      <p class="lead fade-up">Vesting is earned by showing up. Trust is earned by showing up well. Two separate systems. Both matter.</p>
+      <p class="lead fade-up">Vesting is earned by showing up. Trust is earned by showing up well.</p>
 
       <div class="five-grid" style="margin-top:12px;">
         <article class="info-card fade-up">
@@ -1093,6 +1163,45 @@
       <p class="muted-note fade-up" style="margin-top:12px;">A bot caught on day 50 loses 50% vesting - everything staked is slashed. The longer a bot runs, the more it stands to lose. Commitment and risk compound together.</p>
 
       <div class="vesting-quote fade-up">Your vesting floor is earned by showing up. Your trust is earned by showing up well. Both matter. They measure different things. One without the other tells half the story.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="fade-up">Your Legaicy Score</h2>
+      <p class="lead fade-up">One number. Three inputs. Updated after every answer.</p>
+      <div class="panel fade-up">
+        <p class="formula-string">Score = (Trust/9 &times; 400) + (Quality/10 &times; 400) + (Streak/30 &times; 200)</p>
+        <p class="muted-note" style="margin-top:0;">Maximum: 1000 - practically unreachable</p>
+      </div>
+
+      <div class="panel fade-up" style="margin-top:14px;">
+        <h3 class="list-title">Score Projection Curve</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Profile</th>
+              <th>Week 1</th>
+              <th>Month 1</th>
+              <th>Month 6</th>
+              <th>Year 1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Casual 1Q/day</td><td>351</td><td>561</td><td>666</td><td>767</td></tr>
+            <tr><td>Active 3-6Q/day</td><td>436</td><td>645</td><td>795</td><td>896</td></tr>
+            <tr><td>Power 6-10Q/day</td><td>488</td><td>738</td><td>924</td><td>972</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="five-grid" style="margin-top:14px;">
+        <article class="info-card fade-up"><h4>300-500</h4><p class="mono" style="font-size:0.74rem;color:#dbcfae;">Building</p></article>
+        <article class="info-card fade-up"><h4>500-700</h4><p class="mono" style="font-size:0.74rem;color:#dbcfae;">Contributor</p></article>
+        <article class="info-card fade-up"><h4>700-850</h4><p class="mono" style="font-size:0.74rem;color:#dbcfae;">Trusted</p></article>
+        <article class="info-card fade-up"><h4>850-950</h4><p class="mono" style="font-size:0.74rem;color:#dbcfae;">Elite</p></article>
+        <article class="info-card fade-up"><h4>950+</h4><p class="mono" style="font-size:0.74rem;color:#dbcfae;">Legendary</p></article>
+      </div>
     </div>
   </section>
 
@@ -1295,10 +1404,12 @@
             <li>legaicy.win - whitepaper</li>
             <li>app.legaicy.win - full web app</li>
             <li>Trust score system active (1-9)</li>
+            <li>Legaicy Score system live</li>
+            <li>Quality-weighted staking active</li>
           </ul>
         </article>
         <article class="info-card fade-up">
-          <h4>Deployed Contracts (9)</h4>
+          <h4>Deployed Contracts (12)</h4>
           <ul class="status-list">
             <li>LGCYToken</li>
             <li>StakingContract</li>
@@ -1307,6 +1418,9 @@
             <li>MockXEN, MockHEX, MockTitanX</li>
             <li>TestnetDrip</li>
             <li>CommunityBurnVaultMock</li>
+            <li>BuyAndBurnVault</li>
+            <li>LPVault</li>
+            <li>Additional protocol support contracts live</li>
           </ul>
         </article>
         <article class="info-card fade-up">
@@ -1409,12 +1523,24 @@
       <h2 class="title-serif fade-up">Start building your Legaicy today.</h2>
       <p class="lead fade-up" style="margin-left:auto;margin-right:auto;">One answer. One day at a time.</p>
       <div class="cta-row fade-up">
-        <a class="btn btn-primary" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App</a>
+        <a class="btn btn-primary launch-app-trigger" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App</a>
         <a class="btn btn-outline" href="https://t.me" target="_blank" rel="noopener noreferrer">Join Telegram</a>
       </div>
       <div class="footer-bar fade-up">legaicy.win - No profit from the work of others - ever. - © 2026 Legaicy Protocol</div>
     </div>
   </section>
+
+  <div class="wallet-modal" id="walletLaunchModal" aria-hidden="true">
+    <div class="wallet-modal-card">
+      <h3>Open in your wallet browser</h3>
+      <div class="wallet-options">
+        <a class="wallet-option" href="https://metamask.app.link/dapp/app.legaicy.win" target="_blank" rel="noopener noreferrer">Open in MetaMask</a>
+        <a class="wallet-option" href="https://rabby.io/" target="_blank" rel="noopener noreferrer">Open in Rabby</a>
+        <a class="wallet-option" href="https://go.cb-wallet.io/dapp?url=https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Open in Coinbase Wallet</a>
+        <a class="wallet-option" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Open in browser anyway</a>
+      </div>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
@@ -1441,6 +1567,42 @@
     );
 
     document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+
+    const appUrl = "https://app.legaicy.win";
+    const launchModal = document.getElementById("walletLaunchModal");
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+    const hasEthereum = typeof window.ethereum !== "undefined";
+
+    const showWalletModal = () => {
+      if (!launchModal) return;
+      launchModal.classList.add("show");
+      launchModal.setAttribute("aria-hidden", "false");
+    };
+
+    const hideWalletModal = () => {
+      if (!launchModal) return;
+      launchModal.classList.remove("show");
+      launchModal.setAttribute("aria-hidden", "true");
+    };
+
+    document.querySelectorAll(".launch-app-trigger").forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (hasEthereum || !isMobile) {
+          window.location.href = appUrl;
+          return;
+        }
+        showWalletModal();
+      });
+    });
+
+    if (launchModal) {
+      launchModal.addEventListener("click", (e) => {
+        if (e.target === launchModal) {
+          hideWalletModal();
+        }
+      });
+    }
 
     if (window.lucide) {
       window.lucide.createIcons();
