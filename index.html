@@ -144,6 +144,53 @@
       margin: 0; font: italic 500 clamp(1.6rem, 4vw, 2.5rem) / 1.2 "Cormorant Garamond", serif; color: #ddd6c5;
     }
 
+    .mission-title {
+      color: var(--gold-light);
+      margin-bottom: 18px;
+    }
+
+    .mission-copy {
+      font: 500 clamp(1.1rem, 2vw, 1.35rem)/1.45 "Cormorant Garamond", serif;
+      color: #ddd5c4;
+      margin: 0 0 16px;
+      max-width: 980px;
+    }
+
+    .privacy-commitment {
+      margin-top: 18px;
+      border-left: 2px solid var(--gold);
+      border-color: var(--gold);
+    }
+
+    .privacy-commitment h3 {
+      margin: 0 0 10px;
+      color: var(--gold-light);
+      font: 600 1.65rem/1 "Cormorant Garamond", serif;
+    }
+
+    .privacy-commitment p {
+      margin: 0 0 10px;
+      color: #c9c1b1;
+    }
+
+    .privacy-commitment ul {
+      margin: 0 0 12px;
+      padding: 0;
+      list-style: none;
+      font-family: "Outfit", sans-serif;
+      color: #ddd4c2;
+    }
+
+    .privacy-commitment li {
+      padding: 3px 0;
+    }
+
+    .privacy-commitment li::before {
+      content: "→ ";
+      color: var(--gold);
+      font-family: "DM Mono", monospace;
+    }
+
     .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .card-title { margin: 0 0 12px; font: 600 2rem/1 "Cormorant Garamond", serif; }
     .new-world { background: rgba(200, 169, 90, 0.1); border: 1px solid rgba(200, 169, 90, 0.35); }
@@ -650,6 +697,7 @@
           <a href="#trust">Trust</a>
           <a href="#staking">Staking</a>
           <a href="#queries">Queries</a>
+          <a href="#roi">ROI</a>
         </div>
         <a class="btn btn-outline launch-app-trigger" href="https://app.legaicy.win" target="_blank" rel="noopener noreferrer">Enter the App</a>
       </div>
@@ -694,6 +742,30 @@
       </div>
     </div>
   </header>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="mission-title fade-up">Your Opinion Has Weight</h2>
+      <p class="mission-copy fade-up">Your data is already a currency. Every search you make, every product you consider, every belief you hold - corporations are paying billions to understand people like you. They just haven't been paying you. Legaicy changes that.</p>
+      <p class="mission-copy fade-up">This protocol exists for one reason: to make sure the people who generate the world's most valuable data - real humans with real opinions and real experiences - are the ones who get paid for it. Not the platforms that harvest it. Not the brokers who package it. You.</p>
+      <p class="mission-copy fade-up">But not all opinions are equal. Legaicy rewards depth, authenticity, and consistency. The protocol filters for genuine human insight - scoring every answer for commercial value, penalizing laziness and rewarding effort. Your best thinking earns the most. That's not a gamble. That's a merit system.</p>
+
+      <div class="panel privacy-commitment fade-up">
+        <h3>YOUR PRIVACY IS NON-NEGOTIABLE</h3>
+        <p>Legaicy is opt-in. Always.</p>
+        <ul>
+          <li>You choose when to participate</li>
+          <li>You choose what to answer</li>
+          <li>You can delete your data at any time</li>
+          <li>No personal information is ever collected</li>
+          <li>No individual answers are ever sold</li>
+          <li>Corporations receive AI-synthesized insights - never your words, never your identity</li>
+        </ul>
+        <p>This is your data. You decide what happens to it.</p>
+        <p style="margin:0;">We just make sure you get paid when it's used.</p>
+      </div>
+    </div>
+  </section>
 
   <section class="section">
     <div class="container">
@@ -1363,6 +1435,43 @@
           <h4>Dashboard Output</h4>
           <p>Query fees are distributed to contributors proportionally based on contribution quality and corpus weight. No earnings are guaranteed.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="roi">
+    <div class="container">
+      <h2 class="fade-up">Contributor Economics</h2>
+      <p class="lead fade-up">Query fees flow through the protocol proportionally:</p>
+      <div class="panel fade-up">
+        <ul class="status-list" style="font-size:0.82rem;">
+          <li>65% of question fees -> contributor pool</li>
+          <li>45% of corporate query fees -> contributor pool</li>
+        </ul>
+      </div>
+
+      <div class="panel fade-up" style="margin-top:14px;">
+        <h3 class="list-title">Your Share Depends On</h3>
+        <ul class="status-list" style="font-size:0.82rem;">
+          <li>-> Your contribution weight (LGCY x quality multiplier)</li>
+          <li>-> Total corpus participation</li>
+          <li>-> Protocol query volume</li>
+        </ul>
+      </div>
+
+      <div class="panel fade-up" style="margin-top:14px;">
+        <h3 class="list-title">Example Mechanics (Not a Projection)</h3>
+        <p class="formula-string" style="margin:0;">If 1 ETH flows to the contributor pool in a week and your effective contribution weight is 2% of total, your share = 0.02 ETH that week.</p>
+      </div>
+
+      <div class="panel fade-up" style="margin-top:14px;">
+        <h3 class="list-title">What Actually Drives Outcomes</h3>
+        <ul class="status-list" style="font-size:0.82rem;">
+          <li>-> How many questions are asked</li>
+          <li>-> How many corporations query the corpus</li>
+          <li>-> Your relative contribution vs other participants</li>
+        </ul>
+        <p class="muted-note">No earnings are guaranteed. This is not investment advice.</p>
       </div>
     </div>
   </section>
