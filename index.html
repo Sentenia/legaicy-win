@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legaicy V2 — Whitepaper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --bg-alt: #ebe5d3;
+    --ink: #1a1612;
+    --ink-soft: #4a443c;
+    --ink-muted: #8a8275;
+    --accent: #c8102e;
+    --accent-soft: #e8b8c0;
+    --rule: #1a1612;
+    --paper: #faf6ed;
+    --shadow: rgba(26, 22, 18, 0.08);
+  }
+
+  [data-theme="dark"] {
+    --bg: #14110d;
+    --bg-alt: #1f1a14;
+    --ink: #f0e9d8;
+    --ink-soft: #b8b0a0;
+    --ink-muted: #6a635a;
+    --accent: #ff4458;
+    --accent-soft: #4a1a22;
+    --rule: #f0e9d8;
+    --paper: #1a1612;
+    --shadow: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .theme-toggle:hover {
+    background: var(--accent);
+    color: var(--paper);
+    transform: scale(1.05);
+  }
+
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  [data-theme="dark"] .icon-sun { display: block; }
+  [data-theme="dark"] .icon-moon { display: none; }
+  .icon-sun { display: none; }
+  .icon-moon { display: block; }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body, .hero, .toc, section, .card, .calculator, .calc-output, .diagram, footer, .table-wrap, .pull-quote {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+  }
+
+  .sans {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ==================== HERO ==================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem 4rem;
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 20% 30%, var(--accent-soft) 0%, transparent 60%),
+      radial-gradient(circle at 80% 70%, var(--bg-alt) 0%, transparent 50%);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-mid {
+    position: relative;
+    z-index: 2;
+    margin: 4rem 0;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .hero-title {
+    font-size: clamp(80px, 14vw, 220px);
+    font-weight: 400;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    max-width: 700px;
+    font-style: italic;
+  }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--ink);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-stat-value {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  /* ==================== NAV ==================== */
+  .toc-inner a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0.25rem 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc-inner a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ==================== SECTIONS ==================== */
+  section {
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  h4 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    max-width: 75ch;
+    color: var(--ink-soft);
+  }
+
+  p.lead {
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    font-style: italic;
+    max-width: 65ch;
+  }
+
+  strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ==================== TWO COLUMN ==================== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin: 3rem 0;
+  }
+
+  .pull-quote {
+    border-left: 4px solid var(--accent);
+    padding: 1rem 0 1rem 2rem;
+    margin: 3rem 0;
+    font-size: 28px;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--ink);
+    max-width: 60ch;
+  }
+
+  /* ==================== TABLES ==================== */
+  .table-wrap {
+    margin: 2rem 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+
+  th {
+    text-align: left;
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid var(--ink);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+
+  td {
+    padding: 0.85rem 0.75rem;
+    border-bottom: 1px solid var(--bg-alt);
+    color: var(--ink-soft);
+  }
+
+  td.num {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ==================== CARDS ==================== */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 2rem;
+    position: relative;
+  }
+
+  .card-num {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .card-body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ==================== CALCULATOR ==================== */
+  .calculator {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 3rem;
+    margin: 3rem 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .calc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .calc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .calc-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .calc-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .calc-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .calc-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .calc-label-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .calc-control select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231a1612' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+  }
+
+  .calc-control input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .calc-control input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: var(--ink);
+  }
+
+  .calc-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: -8px;
+    border: 2px solid var(--paper);
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+
+  .calc-control input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: var(--ink);
+  }
+
+  .calc-control input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 2px solid var(--paper);
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+
+  .calc-context {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-top: 0.25rem;
+  }
+
+  .calc-output {
+    background: #1a1612;
+    color: #faf6ed;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 300px;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(250, 246, 237, 0.15);
+    font-size: 13px;
+  }
+
+  .calc-row:last-of-type {
+    border-bottom: none;
+  }
+
+  .calc-row-label {
+    color: rgba(250, 246, 237, 0.7);
+  }
+
+  .calc-row-value {
+    font-family: 'JetBrains Mono', monospace;
+    color: #faf6ed;
+    font-weight: 500;
+  }
+
+  .calc-result {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  .calc-result-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(250, 246, 237, 0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  .calc-result-value {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    font-style: italic;
+  }
+
+  .calc-result-sub {
+    font-size: 13px;
+    color: rgba(250, 246, 237, 0.7);
+    margin-top: 0.5rem;
+  }
+
+  .calc-disclaimer {
+    margin-top: 2rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-alt);
+    border-left: 3px solid var(--accent);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ==================== MERMAID ==================== */
+  .diagram {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 3rem;
+    margin: 3rem 0;
+    overflow-x: auto;
+  }
+
+  .diagram-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  /* ==================== TIMELINE ==================== */
+  .timeline {
+    margin: 3rem 0;
+    border-left: 2px solid var(--ink);
+    padding-left: 3rem;
+  }
+
+  .timeline-item {
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -3.5rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .timeline-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .timeline-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .timeline-body {
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ==================== FOOTER ==================== */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4rem;
+    text-align: center;
+    border-top: 4px solid var(--accent);
+  }
+
+  footer h3 {
+    color: var(--paper);
+    font-size: 48px;
+    margin-bottom: 1.5rem;
+  }
+
+  footer p {
+    color: rgba(250, 246, 237, 0.7);
+    max-width: 60ch;
+    margin: 0 auto 1rem;
+  }
+
+  .footer-meta {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(250, 246, 237, 0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(250, 246, 237, 0.5);
+  }
+
+  /* TOC fade indicator on mobile to show scrollability */
+  .toc {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--ink);
+    padding: 1rem 4rem;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .toc-inner {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .toc-inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ==================== RESPONSIVE ==================== */
+  @media (max-width: 900px) {
+    body { font-size: 16px; }
+
+    /* Hero — tighter and more legible */
+    .hero { padding: 2rem 1.25rem; min-height: auto; }
+    .hero-top { font-size: 10px; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+    .hero-mid { margin: 3rem 0 2rem; }
+    .hero-eyebrow { font-size: 11px; margin-bottom: 1.5rem; }
+    .hero-title { font-size: 56px; line-height: 0.9; margin-bottom: 1.5rem; }
+    .hero-subtitle { font-size: 18px; }
+    .hero-bottom { grid-template-columns: 1fr; gap: 1.25rem; padding-top: 2rem; }
+    .hero-stat-value { font-size: 22px; }
+
+    /* TOC — give it a fade hint that it's scrollable */
+    .toc {
+      padding: 0.75rem 1.25rem;
+      position: relative;
+    }
+    .toc::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 30px;
+      background: linear-gradient(to right, transparent, var(--bg));
+      pointer-events: none;
+    }
+    .toc-inner { gap: 1.25rem; padding-right: 1rem; }
+    .toc-inner a { padding: 0.5rem 0; font-size: 11px; }
+
+    /* Sections */
+    section { padding: 3.5rem 1.25rem; }
+    .section-num { font-size: 11px; margin-bottom: 1rem; }
+    h2 { font-size: 36px; margin-bottom: 1.5rem; }
+    h3 { font-size: 24px; margin-top: 2rem; }
+    h4 { font-size: 18px; }
+    p { font-size: 16px; }
+    p.lead { font-size: 19px; line-height: 1.4; }
+
+    /* Layouts collapse */
+    .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .pull-quote { font-size: 20px; padding-left: 1.25rem; margin: 2rem 0; }
+
+    /* Cards */
+    .cards { grid-template-columns: 1fr; gap: 1rem; }
+    .card { padding: 1.5rem; }
+    .card-title { font-size: 19px; }
+    .card-body { font-size: 14px; }
+
+    /* Tables — horizontal scroll wrapper */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem -1.25rem;
+      padding: 0 1.25rem;
+      border-left: none;
+      border-right: none;
+    }
+    table { min-width: 540px; font-size: 13px; }
+    th { font-size: 10px; padding: 0.75rem 0.5rem; }
+    td { padding: 0.65rem 0.5rem; }
+
+    /* Calculator — full mobile rebuild */
+    .calculator { padding: 1.5rem; margin: 2rem -0.5rem; }
+    .calc-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .calc-title { font-size: 24px; }
+    .calc-tag { font-size: 10px; }
+    .calc-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .calc-output { padding: 1.5rem; min-height: auto; }
+    .calc-result-value { font-size: 44px; }
+    .calc-disclaimer { font-size: 12px; padding: 0.75rem 1rem; }
+
+    /* Mermaid diagrams */
+    .diagram { padding: 1.5rem; margin: 2rem -0.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .diagram-caption { font-size: 10px; margin-bottom: 1rem; }
+    .mermaid { min-width: 320px; }
+    .mermaid svg { max-width: 100%; height: auto; }
+
+    /* Timeline tighter */
+    .timeline { padding-left: 1.5rem; margin: 2rem 0; }
+    .timeline-item { margin-bottom: 2rem; }
+    .timeline-item::before { left: -2rem; width: 10px; height: 10px; }
+    .timeline-year { font-size: 12px; }
+    .timeline-title { font-size: 19px; }
+    .timeline-body { font-size: 14px; }
+
+    /* Theme toggle smaller, doesn't block content */
+    .theme-toggle {
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 36px;
+      height: 36px;
+    }
+    .theme-toggle svg { width: 14px; height: 14px; }
+
+    /* Footer */
+    footer { padding: 3rem 1.25rem; }
+    footer h3 { font-size: 32px; }
+    footer p { font-size: 15px; }
+    .footer-meta { font-size: 10px; }
+
+    /* Code blocks */
+    section p[style*="JetBrains Mono"] {
+      font-size: 12px !important;
+      padding: 1rem !important;
+      overflow-x: auto;
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 480px) {
+    .hero-title { font-size: 44px; }
+    h2 { font-size: 30px; }
+    .pull-quote { font-size: 18px; }
+    .calc-result-value { font-size: 36px; }
+  }
+
+  /* Custom highlight */
+  .highlight {
+    background: linear-gradient(transparent 60%, var(--accent-soft) 60%);
+    padding: 0 0.15em;
+  }
+</style>
+</head>
+<body>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 17a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM4.93 4.93a1 1 0 0 1 1.41 0L7.76 6.34a1 1 0 0 1-1.41 1.41L4.93 6.34a1 1 0 0 1 0-1.41zm11.31 11.31a1 1 0 0 1 1.41 0l1.42 1.42a1 1 0 0 1-1.41 1.41l-1.42-1.42a1 1 0 0 1 0-1.41zM2 12a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm17 0a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2h-2a1 1 0 0 1-1-1zM4.93 19.07a1 1 0 0 1 0-1.41l1.42-1.42a1 1 0 0 1 1.41 1.41L6.34 19.07a1 1 0 0 1-1.41 0zm11.31-11.31a1 1 0 0 1 0-1.41l1.42-1.42a1 1 0 0 1 1.41 1.41l-1.42 1.42a1 1 0 0 1-1.41 0z"/></svg>
+</button>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+  <div class="hero-top">
+    <div>Legaicy Protocol · Whitepaper v0.1</div>
+    <div>Sepolia Testnet · 2026</div>
+  </div>
+
+  <div class="hero-mid">
+    <div class="hero-eyebrow">Proof of Human · Quality Over Quantity</div>
+    <h1 class="hero-title">A market for <em>human</em><br>opinion.</h1>
+    <p class="hero-subtitle">Legaicy is a research protocol where verified humans answer questions, build a quality-ranked corpus, and earn ETH when corporations buy access to their work.</p>
+  </div>
+
+  <div class="hero-bottom">
+    <div>
+      <div class="hero-stat-label">Contractor share</div>
+      <div class="hero-stat-value">80% of corp ETH</div>
+    </div>
+    <div>
+      <div class="hero-stat-label">LGCY hard cap</div>
+      <div class="hero-stat-value">~1B asymptotic</div>
+    </div>
+    <div>
+      <div class="hero-stat-label">Subscription</div>
+      <div class="hero-stat-value">0.005 ETH / yr</div>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== TOC ==================== -->
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#problem">01 Problem</a>
+    <a href="#solution">02 Solution</a>
+    <a href="#users">03 Users</a>
+    <a href="#trust">04 Trust System</a>
+    <a href="#corps">05 Corps</a>
+    <a href="#calculator">06 Earnings</a>
+    <a href="#tokenomics">07 Tokenomics</a>
+    <a href="#vault">08 Protocol Vault</a>
+    <a href="#governance">09 Governance</a>
+    <a href="#architecture">10 Architecture</a>
+    <a href="#roadmap">11 Roadmap</a>
+  </div>
+</nav>
+
+<!-- ==================== 01 PROBLEM ==================== -->
+<section id="problem">
+  <div class="section-num">01 — The Problem</div>
+  <h2>Market research is broken.</h2>
+
+  <p class="lead">The industry is a $80B market built on three failures that have only worsened with AI.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-num">i</div>
+      <div class="card-title">Bot contamination</div>
+      <div class="card-body">SurveyMonkey, Pollfish, and Prolific cannot reliably distinguish humans from AI. Reports estimate 30-60% of survey responses on commodity platforms are now bot or AI-generated.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">ii</div>
+      <div class="card-title">Worker exploitation</div>
+      <div class="card-body">Mechanical Turk pays $1-3/hour. Prolific takes 33% from researchers. Respondents see pennies for work that resells for hundreds of dollars per response.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">iii</div>
+      <div class="card-title">No verifiability</div>
+      <div class="card-body">Corps pay for "verified panels" with no on-chain proof. Demographics are self-reported and unverifiable. Quality scoring is opaque.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    The quality of consumer research data has collapsed precisely as the cost of generating fake responses has dropped to zero.
+  </div>
+
+  <p>Premium research firms (Nielsen, Ipsos, Kantar) charge $50-300 per response with weeks of turnaround. They sit at the top of a market that has no middle. Below them: commodity panels of unverifiable humans and AI. There is no infrastructure for fast, verifiable, fairly-paid human research.</p>
+</section>
+
+<!-- ==================== 02 SOLUTION ==================== -->
+<section id="solution">
+  <div class="section-num">02 — Legaicy's Approach</div>
+  <h2>Verified humans, paid fairly, on chain.</h2>
+
+  <p class="lead">A protocol that solves all three failures with a single architecture: subscription-gated humans, AI-scored quality, optional Proof of Personhood, on-chain settlement, and 80% revenue to contractors.</p>
+
+  <div class="two-col">
+    <div>
+      <h4>For users</h4>
+      <p>Subscribe with 0.005 ETH/year. Answer questions to build your trust ranking. Stake LGCY to unlock higher-paying tiers. Earn ETH when corps buy your tier's data, plus LGCY tokens for every quality answer. Verify with Worldcoin or Humanity Protocol to unlock Trust 7+ and access premium queries up to $1,500 per response.</p>
+    </div>
+    <div>
+      <h4>For corporations</h4>
+      <p>Buy access to verified human research at any scale. Pulse polls (50 responses, $150-500). Premium studies (200 responses, $2,000-5,000). Authority research with PoH-verified humans (500 responses, $15,000-35,000). Filter by trust level, demographics, and verification provider.</p>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    Every answer is a piece of work. Every contributor is a verified human. Every dollar paid is auditable on chain. Every protocol decision compounds toward LGCY value through automated buy-and-burn.
+  </div>
+</section>
+
+<!-- ==================== 03 USERS ==================== -->
+<section id="users">
+  <div class="section-num">03 — The User Journey</div>
+  <h2>How a contributor builds equity.</h2>
+
+  <p class="lead">A new user becomes a high-earning contributor through measurable, verifiable progression. No hidden mechanics. Every step has a clear unlock.</p>
+
+  <div class="diagram">
+    <div class="diagram-caption">User progression flow</div>
+    <div class="mermaid">
+flowchart LR
+    A[Subscribe<br/>0.005 ETH/yr] --> B[Trust 1<br/>Pulse access]
+    B --> C[Answer corpus<br/>Earn LGCY]
+    C --> D[Trust 3<br/>Standard tier<br/>2.5K LGCY]
+    D --> E[Trust 5<br/>Premium tier<br/>10K LGCY]
+    E --> F{Verify<br/>PoH?}
+    F -->|Yes| G[Trust 7+<br/>Authority tier<br/>30K LGCY<br/>Job Board access]
+    F -->|No| H[Trust 6 cap<br/>Premium ceiling]
+    G --> I[Trust 8/9<br/>Max emission<br/>1.10x multiplier]
+    
+    classDef start fill:#c8102e,stroke:#1a1612,color:#faf6ed
+    classDef gate fill:#1a1612,stroke:#1a1612,color:#faf6ed
+    classDef trust fill:#faf6ed,stroke:#1a1612,color:#1a1612
+    
+    class A start
+    class F gate
+    class B,D,E,G,H,I trust
+    </div>
+  </div>
+
+  <h3>The progression formula</h3>
+  <p>Trust progression weights three inputs to prevent bot farming and reward genuine engagement:</p>
+  <p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; background: var(--paper); padding: 1.5rem; border-left: 3px solid var(--accent); max-width: 60ch;">
+    progress = (answers / required × 0.40) +<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(quality / 100 × 0.40) +<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(clean_days / required × 0.20)
+  </p>
+
+  <h3>Trust progression thresholds</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Trust Level</th>
+          <th>HQ Answers</th>
+          <th>Min Quality</th>
+          <th>Clean Days</th>
+          <th class="num">Time</th>
+          <th class="num">LGCY Multiplier</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1 → 2</td><td class="num">10</td><td class="num">60</td><td class="num">7</td><td class="num">~1 wk</td><td class="num">0.65×</td></tr>
+        <tr><td>2 → 3</td><td class="num">25</td><td class="num">65</td><td class="num">21</td><td class="num">~3 wks</td><td class="num">0.70×</td></tr>
+        <tr><td>3 → 4</td><td class="num">50</td><td class="num">70</td><td class="num">45</td><td class="num">~1.5 mo</td><td class="num">0.75×</td></tr>
+        <tr><td>4 → 5</td><td class="num">100</td><td class="num">75</td><td class="num">90</td><td class="num">~3 mo</td><td class="num">0.80×</td></tr>
+        <tr><td>5 → 6</td><td class="num">200</td><td class="num">78</td><td class="num">150</td><td class="num">~5 mo</td><td class="num">0.90×</td></tr>
+        <tr><td>6 → 7 (PoH)</td><td class="num">350</td><td class="num">80</td><td class="num">225</td><td class="num">~7 mo</td><td class="num">1.00×</td></tr>
+        <tr><td>7 → 8</td><td class="num">425</td><td class="num">82</td><td class="num">350</td><td class="num">~11 mo</td><td class="num">1.05×</td></tr>
+        <tr><td>8 → 9</td><td class="num">500</td><td class="num">85</td><td class="num">500</td><td class="num">~16 mo</td><td class="num">1.10×</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Power users can reduce the clean-day requirement by answering more questions: every HQ answer above the threshold subtracts 0.5 days from the time requirement, capped at 50% reduction. Active contributors are rewarded; bots cannot speedrun.</p>
+</section>
+
+<!-- ==================== 04 TRUST ==================== -->
+<section id="trust">
+  <div class="section-num">04 — Trust as Infrastructure</div>
+  <h2>Sybil resistance through layered verification.</h2>
+
+  <p class="lead">Trust is the hardest problem in research data. Legaicy stacks five mechanisms — economic, behavioral, AI-based, and cryptographic — to make Sybil attacks economically irrational.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title">Subscription gate</div>
+      <div class="card-body">0.005 ETH per year locks out trivial spam. A botnet of 1,000 fake accounts costs 5 ETH upfront with no guarantee of return.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title">AI quality scoring</div>
+      <div class="card-body">Claude Haiku scores every answer 0-100. Below 60 quality earns zero. Generic AI-generated answers score 40-55 consistently.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title">Behavioral analysis</div>
+      <div class="card-body">Writing fingerprints, response timing, mouse patterns, and tab-switching detect copy-paste from external AI tools.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">04</div>
+      <div class="card-title">Proof of Personhood</div>
+      <div class="card-body">Trust 7+ requires verification through Worldcoin (iris scan) or Humanity Protocol (palm scan). One credential per wallet, enforced on-chain.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">05</div>
+      <div class="card-title">Progressive flag system</div>
+      <div class="card-body">Three-strike enforcement. Flag 1: payout docked. Flag 2: cooldown extended. Flag 3: account suspended pending admin review with 30-day SLA.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">06</div>
+      <div class="card-title">Permanent PoH ban</div>
+      <div class="card-body">Confirmed bad actors lose all staked LGCY (burned), forfeit ETH (to vault), and have their PoH credential permanently blocked.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    Bots can be cheap or convincing. Not both. Legaicy makes them expensive.
+  </div>
+</section>
+
+<!-- ==================== 05 CORPS ==================== -->
+<section id="corps">
+  <div class="section-num">05 — The Corp Side</div>
+  <h2>Five tiers, one infrastructure.</h2>
+
+  <p class="lead">Corporations buy from a single corpus filtered by trust level, demographics, PoH provider, and recency. Pricing scales from quick polls to enterprise studies.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Package</th>
+          <th>Responses</th>
+          <th>Trust Required</th>
+          <th>LGCY Stake</th>
+          <th class="num">Price Range</th>
+          <th>Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Pulse</strong></td><td class="num">50</td><td>1+</td><td class="num">1,000</td><td class="num">$150 – $500</td><td>Quick directional checks</td></tr>
+        <tr><td><strong>Standard</strong></td><td class="num">100</td><td>3+</td><td class="num">2,500</td><td class="num">$500 – $1,500</td><td>Concept screening, ad testing</td></tr>
+        <tr><td><strong>Premium</strong></td><td class="num">200</td><td>5+</td><td class="num">10,000</td><td class="num">$2,000 – $5,000</td><td>Full concept testing, segmentation</td></tr>
+        <tr><td><strong>Authority</strong></td><td class="num">500</td><td>7+ PoH</td><td class="num">30,000</td><td class="num">$15,000 – $35,000</td><td>Brand tracking, purchase intent</td></tr>
+        <tr><td><strong>Enterprise</strong></td><td class="num">1,000+</td><td>7+ PoH + demos</td><td class="num">60,000</td><td class="num">$75,000 – $150,000</td><td>Full market studies</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Beyond surveys</h3>
+  <p>Legaicy supports the full research stack: open-ended feedback, concept testing, diary studies, journey mapping, ad/creative testing, pricing research, conjoint analysis, brand tracking, segmentation, name/logo testing, persona building. Year 1 introduces focus groups, in-depth interviews, and Trust 10 specialist tier for credentialed B2B research at $300-2,500 per interview.</p>
+
+  <h3>The two intake flows</h3>
+  <div class="two-col">
+    <div>
+      <h4>Existing corpus</h4>
+      <p>Search the corpus, filter by criteria, buy a package. AI synthesizes results. Use for evergreen research questions and tracking studies. Price varies by package size and trust requirement.</p>
+    </div>
+    <div>
+      <h4>Custom Job Board</h4>
+      <p>Submit custom questions. Workers complete in 2-hour panels. Receive raw answers + AI synthesis within hours. Use for time-sensitive proprietary research. 90% of corp ETH goes directly to contractors.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 06 CALCULATOR ==================== -->
+<section id="calculator">
+  <div class="section-num">06 — Earnings Calculator</div>
+  <h2>What can you actually earn?</h2>
+
+  <p class="lead">Drag the controls. See real economics for a contributor at your tier and rank, given different corp query volumes.</p>
+
+  <div class="calculator">
+    <div class="calc-header">
+      <div class="calc-title">Live earnings model</div>
+      <div class="calc-tag">Tier B Contributor · Rank #12</div>
+    </div>
+
+    <div class="calc-grid">
+      <div class="calc-controls">
+        <div class="calc-control">
+          <div class="calc-label">
+            <span>Question tier</span>
+            <span class="calc-label-value" id="cTier">Tier B</span>
+          </div>
+          <select id="tierSelect">
+            <option value="C">Tier C — Basic</option>
+            <option value="B" selected>Tier B — Opinion</option>
+            <option value="A">Tier A — Reflective</option>
+            <option value="S">Tier S — Premium (Trust 7+ preview)</option>
+          </select>
+        </div>
+
+        <div class="calc-control">
+          <div class="calc-label">
+            <span>Query size</span>
+            <span class="calc-label-value" id="cSize">200 responses</span>
+          </div>
+          <input type="range" id="sizeSlider" min="20" max="1000" value="200" step="10">
+          <div class="calc-context">Larger queries reach lower-quality users</div>
+        </div>
+
+        <div class="calc-control">
+          <div class="calc-label">
+            <span>Annual corp queries</span>
+            <span class="calc-label-value" id="cVol">100 / year</span>
+          </div>
+          <select id="volSelect">
+            <option value="10">10 — Y1 conservative</option>
+            <option value="50">50 — Y1 stretch</option>
+            <option value="100" selected>100 — Y2 goal</option>
+            <option value="500">500 — Y3 goal</option>
+            <option value="1000">1,000 — Y3+ stretch</option>
+          </select>
+          <div class="calc-context" id="volCtx">Year 2 goal · ~2 queries/wk in this tier</div>
+        </div>
+      </div>
+
+      <div class="calc-output">
+        <div>
+          <div class="calc-row">
+            <span class="calc-row-label">Corp pays</span>
+            <span class="calc-row-value" id="corpPays">$5,500</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label">Contractor pool</span>
+            <span class="calc-row-value" id="pool">$4,400</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label">Your rank</span>
+            <span class="calc-row-value" id="rank">#12 / qualifies</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label">Below quality floor</span>
+            <span class="calc-row-value" id="below">12 (6%)</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label">Per query</span>
+            <span class="calc-row-value" id="perQuery">$22</span>
+          </div>
+        </div>
+
+        <div class="calc-result">
+          <div class="calc-result-label">Annual potential</div>
+          <div class="calc-result-value" id="annual">$2,200</div>
+          <div class="calc-result-sub" id="annualSub">Plus LGCY emissions and base corpus answering income</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-disclaimer">
+      Volume targets are protocol projections, not guarantees. Year 1 assumes 10-50 corp queries. Year 2 targets 100-500. Year 3 expects 500-1,000+. Actual earnings depend on query volume, your active rank at query time, and quality distribution of all participants. Corps may filter by trust level, demographics, and PoH provider.
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 07 TOKENOMICS ==================== -->
+<section id="tokenomics">
+  <div class="section-num">07 — LGCY Tokenomics</div>
+  <h2>Earn through work. Burn through use.</h2>
+
+  <p class="lead">LGCY exists to align contributors, corps, and the protocol. Supply grows only through quality answers. Buybacks and burns from corp revenue create deflationary pressure as adoption grows.</p>
+
+  <h3>Supply mechanics</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Pre-mint at deploy</td><td class="num">5,000,000 LGCY</td><td>1M to deployer (LP seed), 4M to Protocol Vault</td></tr>
+        <tr><td>Hard cap</td><td class="num">~1,000,000,000</td><td>Asymptotic — never reached</td></tr>
+        <tr><td>Base emission</td><td class="num">100 LGCY / answer</td><td>Modified by quality, trust, demos, tier</td></tr>
+        <tr><td>First halving</td><td class="num">100M supply</td><td>Linear early phase</td></tr>
+        <tr><td>Second halving</td><td class="num">250M supply</td><td>Continued linear</td></tr>
+        <tr><td>Third halving</td><td class="num">500M supply</td><td>Transition to asymptotic</td></tr>
+        <tr><td>Asymptotic phase</td><td class="num">750M / 875M / 937.5M</td><td>Each halving slows further</td></tr>
+        <tr><td>Initial LP</td><td class="num">0.3 ETH + 1M LGCY</td><td>Opening price ~$0.001/LGCY</td></tr>
+        <tr><td>LP NFT</td><td class="num">Held by Deployer until decentralization</td><td>Migration path TBD Y2+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Emission formula</h3>
+  <p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; background: var(--paper); padding: 1.5rem; border-left: 3px solid var(--accent); max-width: 60ch;">
+    LGCY_earned = base_emission ×<br>
+    &nbsp;&nbsp;(quality_score / 100) ×<br>
+    &nbsp;&nbsp;trust_multiplier ×<br>
+    &nbsp;&nbsp;demographic_multiplier ×<br>
+    &nbsp;&nbsp;tier_multiplier
+  </p>
+
+  <p>Tier multipliers: Pulse 1.0×, Standard 1.5×, Premium 2.0×, Authority 2.5×, Enterprise 3.0×. Trust multipliers scale from 0.60× (Trust 1) to 1.10× (Trust 9). Demographics filled provide up to 2.0× bonus.</p>
+
+  <h3>Revenue splits</h3>
+  <div class="two-col">
+    <div>
+      <h4>User ETH (Subscriptions + Question Fees)</h4>
+      <div class="table-wrap" style="margin-top: 1rem;">
+        <table>
+          <tr><td>Dev fee (Y0-2)</td><td class="num">15%</td></tr>
+          <tr><td>Protocol Vault</td><td class="num">85%</td></tr>
+        </table>
+      </div>
+      <p style="font-size: 14px; margin-top: 1rem;">Y3 transition: dev fee drops to 5%, vault rises to 95%.</p>
+    </div>
+    <div>
+      <h4>Corp ETH (Queries + Job Board)</h4>
+      <div class="table-wrap" style="margin-top: 1rem;">
+        <table>
+          <tr><td>Dev fee (Y0-2)</td><td class="num">15%</td></tr>
+          <tr><td>Contractors</td><td class="num">80%</td></tr>
+          <tr><td>Protocol Vault</td><td class="num">2.5%</td></tr>
+          <tr><td>Treasury</td><td class="num">2.5%</td></tr>
+        </table>
+      </div>
+      <p style="font-size: 14px; margin-top: 1rem;">Y3+: dev 5%, contractors 80%, vault 7.5%, treasury 7.5%. DAO can adjust the vault/treasury split (cannot reduce contractor share below 80% or dev fee below 5%).</p>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    Contractors get 80% of corp revenue from day one. Industry standard is 50-67%. We pay more because the work is harder and the verification is real.
+  </div>
+</section>
+
+<!-- ==================== 08 VAULT ==================== -->
+<section id="vault">
+  <div class="section-num">08 — Protocol Vault</div>
+  <h2>Four buttons. Anyone can press.</h2>
+
+  <p class="lead">The Protocol Vault automates LP stabilization and buy-and-burn. Anyone can trigger any action; the protocol pays a 0.33% rebate to the caller. Cooldowns prevent abuse.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-num">A</div>
+      <div class="card-title">Add Liquidity</div>
+      <div class="card-body">When LP is below 2% of market cap, brings LP to 3%. Pairs incoming ETH with LGCY from reserve (Phase 1) or market buys (Phase 2). 2-hour cooldown.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">B</div>
+      <div class="card-title">Buy &amp; Burn</div>
+      <div class="card-body">When LP is at or above 2% of market cap, buys LGCY from market within 3% slippage and sends to dead address. Permanent supply reduction. 2-hour cooldown.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">C</div>
+      <div class="card-title">Claim LP Rewards</div>
+      <div class="card-body">Collects accumulated V3 LP fees. ETH portion returns to vault. LGCY portion enters burn queue. 24-hour cooldown.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">D</div>
+      <div class="card-title">Burn LGCY</div>
+      <div class="card-body">Burns LGCY queued from LP fees and slashed positions. Permanent supply reduction. 24-hour cooldown.</div>
+    </div>
+  </div>
+
+  <p>All parameters (2% threshold, 3% target, 3% slippage, 0.33% rebate) are immutable. Cooldowns are admin-adjustable in Year 0 only and are renounced after audit. The vault has two phases: while the 4M LGCY reserve is non-zero, Add Liquidity uses reserve LGCY (Buy &amp; Burn is disabled). Once reserve hits zero, all four buttons activate and the vault becomes fully market-driven.</p>
+</section>
+
+<!-- ==================== 09 GOVERNANCE ==================== -->
+<section id="governance">
+  <div class="section-num">09 — Trust-Weighted Governance</div>
+  <h2>Earned voice, not bought voice.</h2>
+
+  <p class="lead">Most DAOs let whales buy votes. Legaicy's governance weights voting power by trust level squared, with a logarithmic stake bonus that rewards LGCY accumulation without letting any single holder dominate.</p>
+
+  <h3>Voting power formula</h3>
+  <p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; background: var(--paper); padding: 1.5rem; border-left: 3px solid var(--accent); max-width: 60ch;">
+    voting_power = trust_level² × stake_multiplier
+  </p>
+
+  <p>Trust² creates exponential separation between trust levels. A Trust 9 user has 81× the voting power of a Trust 1 user before stake is considered. Stake multiplier is linear from 0-100K LGCY (capped at 2.0×), then logarithmic above that — approaching but never reaching 3.0×. Whales remain incentivized to accumulate, but their marginal influence diminishes sharply.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User Profile</th>
+          <th>Trust</th>
+          <th>Stake (LGCY)</th>
+          <th>Trust²</th>
+          <th>Stake Mult</th>
+          <th class="num">Total Votes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>New user</td><td class="num">1</td><td class="num">1,000</td><td class="num">1</td><td class="num">0.10</td><td class="num">0.1</td></tr>
+        <tr><td>Casual</td><td class="num">3</td><td class="num">5,000</td><td class="num">9</td><td class="num">0.50</td><td class="num">4.5</td></tr>
+        <tr><td>Active</td><td class="num">5</td><td class="num">10,000</td><td class="num">25</td><td class="num">1.00</td><td class="num">25</td></tr>
+        <tr><td>Power user</td><td class="num">7</td><td class="num">25,000</td><td class="num">49</td><td class="num">1.19</td><td class="num">58</td></tr>
+        <tr><td>Dedicated</td><td class="num">9</td><td class="num">50,000</td><td class="num">81</td><td class="num">1.50</td><td class="num">122</td></tr>
+        <tr><td>Maxed</td><td class="num">9</td><td class="num">100,000</td><td class="num">81</td><td class="num">2.00</td><td class="num">162</td></tr>
+        <tr><td>Whale</td><td class="num">9</td><td class="num">10,000,000</td><td class="num">81</td><td class="num">2.98</td><td class="num">241</td></tr>
+        <tr><td>Specialist</td><td class="num">10</td><td class="num">100,000</td><td class="num">100</td><td class="num">2.00</td><td class="num">200</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A whale holding 100× more LGCY than a dedicated Trust 9 contributor gets only ~50% more voting power. Trust earned through work is the dominant signal.</p>
+
+  <h3>Constitutional protections</h3>
+  <p>The following parameters are immutable and cannot be changed by any vote:</p>
+  <ul style="margin-left: 2rem; color: var(--ink-soft);">
+    <li>Contractor share floor of 80%</li>
+    <li>Dev fee minimum of 5% (when transitioned to operator role)</li>
+    <li>Buy-and-burn mechanism existence</li>
+    <li>Subscription requirement</li>
+    <li>Anti-bot enforcement stack</li>
+    <li>User data deletion rights</li>
+  </ul>
+
+  <h3>Governance roadmap</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">Year 0</div>
+      <div class="timeline-title">Solo operation</div>
+      <div class="timeline-body">Founder operates alone. All decisions documented publicly. Treasury accumulates passively.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 1</div>
+      <div class="timeline-title">Informal Snapshot polls</div>
+      <div class="timeline-body">Non-binding community votes on Snapshot. Founder still executes. Builds governance habits.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 2</div>
+      <div class="timeline-title">Multisig + binding votes</div>
+      <div class="timeline-body">5-of-7 multisig executes binding votes. Trust² weighting active. Founder retains emergency veto.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 3</div>
+      <div class="timeline-title">Full DAO automation</div>
+      <div class="timeline-body">Governor contract automates execution. Founder veto removed. Founder transitions to paid operator role at 5% dev fee.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 10 ARCHITECTURE ==================== -->
+<section id="architecture">
+  <div class="section-num">10 — System Architecture</div>
+  <h2>How the pieces fit together.</h2>
+
+  <p class="lead">Twelve smart contracts coordinate user activity, corp queries, LGCY emissions, ETH settlement, and protocol stabilization. Below is the high-level flow.</p>
+
+  <div class="diagram">
+    <div class="diagram-caption">Protocol architecture overview</div>
+    <div class="mermaid">
+flowchart TB
+    subgraph users[" "]
+        direction LR
+        U1[Users<br/>Subscribe + Answer]
+        U2[Corps<br/>Buy + Query]
+    end
+    
+    subgraph router["Revenue Layer"]
+        direction LR
+        R1[Subscription<br/>Contract]
+        R2[UserFeeRouter]
+        R3[RevenueRouter]
+        R4[WaitlistJobBoard]
+    end
+    
+    subgraph state["State Layer"]
+        direction LR
+        S1[TrustRegistry]
+        S2[StakingVault]
+        S3[LGCYToken]
+    end
+    
+    subgraph treasury["Vault Layer"]
+        direction LR
+        V1[ProtocolVault<br/>LP + Burn]
+        V2[Treasury<br/>DAO Reserve]
+        V3[OperationsVault<br/>Dev Fee]
+    end
+    
+    subgraph slash["Enforcement"]
+        SL1[SlashingManager<br/>Flag System]
+    end
+    
+    U1 --> R1
+    U1 --> R2
+    U2 --> R3
+    U2 --> R4
+    
+    R1 --> V1
+    R1 --> V3
+    R2 --> V1
+    R2 --> V3
+    
+    R3 --> S2
+    R3 --> V1
+    R3 --> V2
+    R3 --> V3
+    
+    R4 --> S2
+    R4 --> V1
+    R4 --> V2
+    R4 --> V3
+    
+    S2 --> S3
+    SL1 --> S2
+    SL1 --> S1
+    S1 -.-> R3
+    S1 -.-> R4
+    
+    classDef user fill:#c8102e,stroke:#1a1612,color:#faf6ed
+    classDef revenue fill:#faf6ed,stroke:#1a1612,color:#1a1612
+    classDef state fill:#ebe5d3,stroke:#1a1612,color:#1a1612
+    classDef vault fill:#1a1612,stroke:#1a1612,color:#faf6ed
+    classDef enforce fill:#e8b8c0,stroke:#1a1612,color:#1a1612
+    
+    class U1,U2 user
+    class R1,R2,R3,R4 revenue
+    class S1,S2,S3 state
+    class V1,V2,V3 vault
+    class SL1 enforce
+    </div>
+  </div>
+
+  <h3>Question feed priority</h3>
+  <div class="diagram">
+    <div class="diagram-caption">Per-user question selection logic</div>
+    <div class="mermaid">
+flowchart LR
+    A[User opens app] --> B{Corp queue<br/>matches eligibility?}
+    B -->|Yes| Z[Serve corp question<br/>highest pay]
+    B -->|No| C{Evergreen<br/>refresh due?}
+    C -->|Yes| Y[Serve refresh question]
+    C -->|No| D{Topical<br/>questions available?}
+    D -->|Yes| X[Serve topical]
+    D -->|No| E{Preset corpus<br/>incomplete?}
+    E -->|Yes| W[Serve preset]
+    E -->|No| V[Random fill<br/>from curated pool]
+    
+    classDef start fill:#c8102e,stroke:#1a1612,color:#faf6ed
+    classDef gate fill:#1a1612,stroke:#1a1612,color:#faf6ed
+    classDef out fill:#faf6ed,stroke:#1a1612,color:#1a1612
+    
+    class A start
+    class B,C,D,E gate
+    class Z,Y,X,W,V out
+    </div>
+  </div>
+
+  <p>Users can toggle their feed mix between Priority (corp queue first), Variety (random across all priorities), or Discovery (mostly baseline + topical). The protocol guarantees that paid corp questions never sit idle behind random content.</p>
+</section>
+
+<!-- ==================== 11 ROADMAP ==================== -->
+<section id="roadmap">
+  <div class="section-num">11 — Roadmap</div>
+  <h2>Where Legaicy goes from here.</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">Now · Sepolia testnet</div>
+      <div class="timeline-title">Subscription contract live</div>
+      <div class="timeline-body">Subscription deployed at <span class="mono">0x7CdE...A689</span>. Smoke tested. Treasury, dev fee wallets configured. LGCYToken next in build order pending tokenomics review.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Q2 2026</div>
+      <div class="timeline-title">Full Sepolia deployment</div>
+      <div class="timeline-body">All 12 contracts deployed and integration tested. Worldcoin PoH integration. Initial 500 baseline questions seeded. Frontend live at testnet URL.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Q3 2026</div>
+      <div class="timeline-title">Audit + mainnet preparation</div>
+      <div class="timeline-body">Full audit by recognized firm ($30-100K from Treasury). Bug bounty program. Wyoming LLC formation. Crypto attorney engagement. Humanity Protocol integration added.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Q4 2026 / Q1 2027</div>
+      <div class="timeline-title">Mainnet launch</div>
+      <div class="timeline-body">LP seeded. First subscriptions opened. Word-of-mouth + Telegram launch. Founder goes semi-public.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 1</div>
+      <div class="timeline-title">Corpus growth + first corp customers</div>
+      <div class="timeline-body">Target: 1,000-5,000 active contributors. 10-50 corp queries. Refine flagging system based on real abuse patterns. Build sales motion.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 2</div>
+      <div class="timeline-title">DAO launch + product expansion</div>
+      <div class="timeline-body">Trust² governance live on Snapshot. Multisig executes. Focus groups, IDIs, diary studies launched. Trust 10 specialist tier opens. Target: 100-500 corp queries.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Year 3</div>
+      <div class="timeline-title">Full decentralization</div>
+      <div class="timeline-body">Governor contract automates execution. Dev fee drops to 5%. Treasury fully DAO-controlled. Founder transitions to paid operator. Annual Corpus API offering at $100-500K enterprise tier.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <h3>This is the design.<br>The build is now.</h3>
+  <p>This whitepaper is a living document. Decisions captured here are locked unless explicitly revised through governance.</p>
+
+  <div class="footer-meta">
+    Whitepaper v0.1 · Sepolia Testnet · April 2026
+</footer>
+
+<script>
+  // Theme toggle logic
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('legaicy-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  if (initialTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  function getMermaidTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return isDark ? {
+      primaryColor: '#1a1612',
+      primaryTextColor: '#f0e9d8',
+      primaryBorderColor: '#f0e9d8',
+      lineColor: '#f0e9d8',
+      secondaryColor: '#1f1a14',
+      tertiaryColor: '#14110d',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px'
+    } : {
+      primaryColor: '#faf6ed',
+      primaryTextColor: '#1a1612',
+      primaryBorderColor: '#1a1612',
+      lineColor: '#1a1612',
+      secondaryColor: '#ebe5d3',
+      tertiaryColor: '#f5f1e8',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px'
+    };
+  }
+
+  function initMermaid() {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: getMermaidTheme()
+    });
+
+    // Reset and re-render all diagrams
+    document.querySelectorAll('.mermaid').forEach((el, i) => {
+      const original = el.getAttribute('data-original') || el.textContent;
+      if (!el.getAttribute('data-original')) {
+        el.setAttribute('data-original', original);
+      }
+      el.removeAttribute('data-processed');
+      el.innerHTML = original;
+    });
+
+    mermaid.run({ querySelector: '.mermaid' });
+  }
+
+  initMermaid();
+
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+
+    if (next === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+
+    localStorage.setItem('legaicy-theme', next);
+
+    // Re-render mermaid with new theme
+    setTimeout(initMermaid, 50);
+  });
+
+  // Calculator logic
+  const tierData = {
+    C: { rank: 47, total: 2847, quality: 78, basePrice: 1500, label: 'Tier C' },
+    B: { rank: 12, total: 1204, quality: 84, basePrice: 5500, label: 'Tier B' },
+    A: { rank: 8, total: 243, quality: 91, basePrice: 12000, label: 'Tier A' },
+    S: { rank: 3, total: 47, quality: 94, basePrice: 35000, label: 'Tier S (preview)' }
+  };
+
+  const volContext = {
+    10: 'Year 1 conservative · ~1 query/mo',
+    50: 'Year 1 stretch · ~1 query/wk',
+    100: 'Year 2 goal · ~2 queries/wk in this tier',
+    500: 'Year 3 goal · ~10 queries/wk',
+    1000: 'Year 3+ stretch · ~20 queries/wk'
+  };
+
+  function recalc() {
+    const tier = document.getElementById('tierSelect').value;
+    const size = parseInt(document.getElementById('sizeSlider').value);
+    const vol = parseInt(document.getElementById('volSelect').value);
+    const data = tierData[tier];
+
+    document.getElementById('cTier').textContent = data.label;
+    document.getElementById('cSize').textContent = size + ' responses';
+    document.getElementById('cVol').textContent = vol + ' / year';
+    document.getElementById('volCtx').textContent = volContext[vol];
+
+    const sizeMultiplier = size / 200;
+    const corpPays = Math.round(data.basePrice * sizeMultiplier);
+    document.getElementById('corpPays').textContent = '$' + corpPays.toLocaleString();
+
+    const pool = Math.round(corpPays * 0.80);
+    document.getElementById('pool').textContent = '$' + pool.toLocaleString();
+
+    const qualifies = data.rank <= size;
+    document.getElementById('rank').textContent = '#' + data.rank + (qualifies ? ' / qualifies' : ' / misses cut');
+
+    let belowFloorPct = 0;
+    if (size <= 50) belowFloorPct = 0;
+    else if (size <= 200) belowFloorPct = 0.06;
+    else if (size <= 500) belowFloorPct = 0.15;
+    else belowFloorPct = 0.25;
+
+    const belowFloorCount = Math.round(size * belowFloorPct);
+    document.getElementById('below').textContent = belowFloorCount + ' (' + Math.round(belowFloorPct * 100) + '%)';
+
+    let earnings = 0;
+    if (qualifies) {
+      const qualifyingCount = size - belowFloorCount;
+      let avgQuality = 85;
+      if (size <= 50) avgQuality = 89;
+      else if (size <= 200) avgQuality = 80;
+      else if (size <= 500) avgQuality = 73;
+      else avgQuality = 68;
+
+      const totalQualityPoints = qualifyingCount * avgQuality;
+      const yourShare = data.quality / totalQualityPoints;
+      earnings = Math.round(pool * yourShare);
+    }
+
+    document.getElementById('perQuery').textContent = '$' + earnings;
+    const annual = earnings * vol;
+    document.getElementById('annual').textContent = '$' + annual.toLocaleString();
+  }
+
+  document.getElementById('tierSelect').addEventListener('change', recalc);
+  document.getElementById('sizeSlider').addEventListener('input', recalc);
+  document.getElementById('volSelect').addEventListener('change', recalc);
+  recalc();
+</script>
+
+</body>
+</html>
